@@ -1,34 +1,69 @@
+// ===== GLOBAL VARIABLES =====
+let currentSection = 'home';
+let isDarkTheme = false;
+let audioElement = null;
+let isMusicPlaying = false;
+
+// Quiz variables
+let quizQuestions = [];
+let currentQuestionIndex = 0;
+let userScore = 0;
+let userAnswers = [];
+let quizStarted = false;
+
+// Game variables
+let clickGame = {
+    active: false,
+    clicks: 0,
+    timeLeft: 10,
+    timer: null,
+    highScores: [0, 0, 0],
+    clickTimer: null
+};
+
+let reactionGame = {
+    waiting: false,
+    startTime: null,
+    reactionTimes: [],
+    bestTime: null,
+    averageTime: null,
+    attempts: 0
+};
+
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("🎂 Birthday website loaded!");
+    console.log("🎂 Birthday website for Fatima loaded!");
     
-    // Initialize all systems
-    initNavigation();
-    initMusic();
-    initTheme();
-    initConfetti();
-    initGames();
-    initQuiz();
+    // Initialize all components
+    initializeNavigation();
+    initializeTheme();
+    initializeMusic();
+    initializeConfetti();
+    initializeGames();
+    initializeQuiz();
     
-    // Show home section
+    // Show home section first
     showSection('home');
+    
+    // Load saved preferences
+    loadPreferences();
 });
 
 // ===== NAVIGATION =====
-function initNavigation() {
+function initializeNavigation() {
     const navButtons = document.querySelectorAll('.nav-btn');
     
     navButtons.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = this.getAttribute('href').substring(1);
             
             // Update active button
             navButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             
-            // Show target section
-            showSection(targetId);
+            // Show section
+            showSection(targetSection);
         });
     });
 }
@@ -39,159 +74,212 @@ function showSection(sectionId) {
         section.classList.remove('active');
     });
     
-    // Show target section
+    // Show target
     const target = document.getElementById(sectionId);
     if (target) {
         target.classList.add('active');
+        currentSection = sectionId;
         
-        // Scroll to section
+        // Smooth scroll to section
         setTimeout(() => {
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
+        
+        // Special initialization for certain sections
+        if (sectionId === 'quiz' && !quizStarted) {
+            startNewQuiz();
+        }
     }
 }
 
-// ===== MUSIC PLAYER (FIXED) =====
-function initMusic() {
-    const musicBtn = document.getElementById('music-toggle');
+// ===== THEME MANAGEMENT =====
+function initializeTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle?.querySelector('i');
+    const themeLabel = themeToggle?.querySelector('.btn-label');
     
-    if (!musicBtn) return;
-    
-    // Create audio element
-    const audio = new Audio('assets/birthday-music.mp3');
-    audio.loop = true;
-    audio.volume = 0.5;
-    
-    let isPlaying = false;
-    
-    // Load saved preference
-    const savedState = localStorage.getItem('musicEnabled');
-    if (savedState === 'true') {
-        isPlaying = true;
-        musicBtn.innerHTML = '<i class="fas fa-volume-up"></i><span>Music</span>';
+    // Check saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        enableDarkTheme();
     }
     
-    musicBtn.addEventListener('click', function() {
-        if (!isPlaying) {
-            // User clicked - browser allows playback now
-            audio.play()
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            if (isDarkTheme) {
+                disableDarkTheme();
+            } else {
+                enableDarkTheme();
+            }
+        });
+    }
+}
+
+function enableDarkTheme() {
+    document.body.classList.add('dark-theme');
+    isDarkTheme = true;
+    
+    const themeIcon = document.querySelector('#theme-toggle i');
+    const themeLabel = document.querySelector('#theme-toggle .btn-label');
+    
+    if (themeIcon) themeIcon.className = 'fas fa-sun';
+    if (themeLabel) themeLabel.textContent = 'Light';
+    
+    localStorage.setItem('theme', 'dark');
+}
+
+function disableDarkTheme() {
+    document.body.classList.remove('dark-theme');
+    isDarkTheme = false;
+    
+    const themeIcon = document.querySelector('#theme-toggle i');
+    const themeLabel = document.querySelector('#theme-toggle .btn-label');
+    
+    if (themeIcon) themeIcon.className = 'fas fa-moon';
+    if (themeLabel) themeLabel.textContent = 'Dark';
+    
+    localStorage.setItem('theme', 'light');
+}
+
+// ===== MUSIC PLAYER (FIXED) =====
+function initializeMusic() {
+    const musicToggle = document.getElementById('music-toggle');
+    
+    if (!musicToggle) return;
+    
+    // Create audio element
+    audioElement = new Audio('assets/birthday-music.mp3');
+    audioElement.loop = true;
+    audioElement.volume = 0.5;
+    
+    // Load music preference
+    const musicPreference = localStorage.getItem('musicEnabled');
+    if (musicPreference === 'true') {
+        isMusicPlaying = true;
+        const musicIcon = musicToggle.querySelector('i');
+        const musicLabel = musicToggle.querySelector('.btn-label');
+        if (musicIcon) musicIcon.className = 'fas fa-volume-up';
+        if (musicLabel) musicLabel.textContent = 'Music';
+    }
+    
+    musicToggle.addEventListener('click', function() {
+        if (!isMusicPlaying) {
+            // User clicked - now we can play audio
+            isMusicPlaying = true;
+            audioElement.play()
                 .then(() => {
-                    isPlaying = true;
-                    this.innerHTML = '<i class="fas fa-volume-up"></i><span>Music</span>';
+                    const musicIcon = this.querySelector('i');
+                    const musicLabel = this.querySelector('.btn-label');
+                    if (musicIcon) musicIcon.className = 'fas fa-volume-up';
+                    if (musicLabel) musicLabel.textContent = 'Music';
                     localStorage.setItem('musicEnabled', 'true');
                     console.log("🎵 Music started successfully!");
                 })
                 .catch(error => {
                     console.error("Music play failed:", error);
-                    this.innerHTML = '<i class="fas fa-music"></i><span>Click Again</span>';
+                    // Show user-friendly message
+                    const musicLabel = this.querySelector('.btn-label');
+                    if (musicLabel) musicLabel.textContent = 'Click Again';
                     setTimeout(() => {
-                        this.innerHTML = '<i class="fas fa-music"></i><span>Music</span>';
+                        if (musicLabel) musicLabel.textContent = 'Music';
                     }, 2000);
                 });
         } else {
-            audio.pause();
-            isPlaying = false;
-            this.innerHTML = '<i class="fas fa-music"></i><span>Music</span>';
+            audioElement.pause();
+            isMusicPlaying = false;
+            const musicIcon = this.querySelector('i');
+            const musicLabel = this.querySelector('.btn-label');
+            if (musicIcon) musicIcon.className = 'fas fa-music';
+            if (musicLabel) musicLabel.textContent = 'Music';
             localStorage.setItem('musicEnabled', 'false');
         }
     });
-}
-
-// ===== THEME TOGGLE =====
-function initTheme() {
-    const themeBtn = document.getElementById('theme-toggle');
     
-    if (!themeBtn) return;
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        themeBtn.innerHTML = '<i class="fas fa-sun"></i><span>Light</span>';
+    // Auto-play after user interaction if previously enabled
+    if (musicPreference === 'true') {
+        document.addEventListener('click', function enableMusicOnce() {
+            if (audioElement.paused) {
+                audioElement.play().catch(e => {
+                    console.log("Autoplay after interaction failed:", e);
+                });
+            }
+            document.removeEventListener('click', enableMusicOnce);
+        }, { once: true });
     }
-    
-    themeBtn.addEventListener('click', function() {
-        document.body.classList.toggle('dark-theme');
-        
-        if (document.body.classList.contains('dark-theme')) {
-            this.innerHTML = '<i class="fas fa-sun"></i><span>Light</span>';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            this.innerHTML = '<i class="fas fa-moon"></i><span>Dark</span>';
-            localStorage.setItem('theme', 'light');
-        }
-    });
 }
 
 // ===== CONFETTI =====
-function initConfetti() {
+function initializeConfetti() {
     const confettiBtn = document.getElementById('confetti-btn');
     
     if (confettiBtn) {
         confettiBtn.addEventListener('click', function() {
-            // Multiple confetti bursts
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
+            launchConfetti();
             
+            // Button animation
+            this.classList.add('pulse');
             setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    angle: 60,
-                    spread: 80,
-                    origin: { x: 0 }
-                });
-            }, 250);
-            
-            setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    angle: 120,
-                    spread: 80,
-                    origin: { x: 1 }
-                });
+                this.classList.remove('pulse');
             }, 500);
-            
-            // Button feedback
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 200);
         });
     }
 }
 
-// ===== GAMES =====
-function initGames() {
-    // Click Game
-    initClickGame();
+function launchConfetti() {
+    // Multiple confetti bursts for celebration
+    confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
     
-    // Reaction Game
-    initReactionGame();
+    setTimeout(() => {
+        confetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 80,
+            origin: { x: 0 }
+        });
+    }, 250);
+    
+    setTimeout(() => {
+        confetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 80,
+            origin: { x: 1 }
+        });
+    }, 500);
+    
+    setTimeout(() => {
+        confetti({
+            particleCount: 200,
+            spread: 100,
+            origin: { y: 0.5 }
+        });
+    }, 750);
 }
 
-// Click Game Variables
-let clickGame = {
-    active: false,
-    clicks: 0,
-    timeLeft: 10,
-    timer: null,
-    bestScore: 0,
-    cps: 0
-};
+// ===== GAMES SYSTEM =====
+function initializeGames() {
+    // Click Game
+    initializeClickGame();
+    
+    // Reaction Game
+    initializeReactionGame();
+}
 
-function initClickGame() {
+// ===== CLICK GAME =====
+function initializeClickGame() {
     const startBtn = document.getElementById('start-click');
     const resetBtn = document.getElementById('reset-click');
-    const clickArea = document.querySelector('.game-display');
+    const clickArea = document.getElementById('click-area');
     
-    // Load best score
-    const savedBest = localStorage.getItem('clickBestScore');
-    if (savedBest) {
-        clickGame.bestScore = parseInt(savedBest);
-        document.getElementById('click-best').textContent = savedBest;
+    // Load saved scores
+    const savedScores = localStorage.getItem('clickHighScores');
+    if (savedScores) {
+        clickGame.highScores = JSON.parse(savedScores);
+        document.getElementById('click-highscore').textContent = clickGame.highScores[0];
     }
     
     if (startBtn) {
@@ -199,7 +287,7 @@ function initClickGame() {
     }
     
     if (resetBtn) {
-        resetBtn.addEventListener('click', resetClickGame);
+        resetBtn.addEventListener('click', resetClickScores);
     }
     
     if (clickArea) {
@@ -213,7 +301,6 @@ function startClickGame() {
     clickGame.active = true;
     clickGame.clicks = 0;
     clickGame.timeLeft = 10;
-    clickGame.cps = 0;
     
     // Update UI
     document.getElementById('start-click').innerHTML = '<i class="fas fa-play"></i> Clicking...';
@@ -223,22 +310,25 @@ function startClickGame() {
     
     // Start timer
     clickGame.timer = setInterval(updateClickTimer, 1000);
+    
+    // Calculate CPS every second
+    clickGame.clickTimer = setInterval(updateCPS, 1000);
 }
 
 function updateClickTimer() {
     clickGame.timeLeft--;
     document.getElementById('click-timer').textContent = clickGame.timeLeft;
     
-    // Calculate CPS
-    if (clickGame.timeLeft < 10) {
-        const secondsPassed = 10 - clickGame.timeLeft;
-        clickGame.cps = (clickGame.clicks / secondsPassed).toFixed(1);
-        document.getElementById('click-cps').textContent = clickGame.cps;
-    }
-    
     if (clickGame.timeLeft <= 0) {
         endClickGame();
     }
+}
+
+function updateCPS() {
+    if (!clickGame.active) return;
+    
+    const cps = Math.round(clickGame.clicks / (10 - clickGame.timeLeft) * 10) / 10;
+    document.getElementById('click-cps').textContent = cps;
 }
 
 function handleClick() {
@@ -248,54 +338,62 @@ function handleClick() {
     document.getElementById('click-count').textContent = clickGame.clicks;
     
     // Visual feedback
-    const clickCounter = document.querySelector('.click-counter h2');
-    clickCounter.style.transform = 'scale(1.2)';
+    const clickArea = document.getElementById('click-area');
+    clickArea.style.transform = 'scale(0.98)';
     setTimeout(() => {
-        clickCounter.style.transform = 'scale(1)';
+        clickArea.style.transform = 'scale(1)';
     }, 100);
 }
 
 function endClickGame() {
-    clearInterval(clickGame.timer);
+    if (!clickGame.active) return;
+    
     clickGame.active = false;
+    clearInterval(clickGame.timer);
+    clearInterval(clickGame.clickTimer);
     
     // Update UI
-    document.getElementById('start-click').innerHTML = '<i class="fas fa-play"></i> Start';
+    document.getElementById('start-click').innerHTML = '<i class="fas fa-play"></i> Start Clicking';
+    document.getElementById('click-timer').textContent = '10';
+    document.getElementById('click-cps').textContent = '0';
     
-    // Update best score
-    if (clickGame.clicks > clickGame.bestScore) {
-        clickGame.bestScore = clickGame.clicks;
-        document.getElementById('click-best').textContent = clickGame.bestScore;
-        localStorage.setItem('clickBestScore', clickGame.bestScore);
-        
-        // Celebration
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
+    // Calculate final CPS
+    const finalCPS = Math.round(clickGame.clicks / 10 * 10) / 10;
+    
+    // Update high scores
+    updateHighScores(clickGame.clicks);
+    
+    // Show results
+    alert(`Click Challenge Complete!\n\nClicks: ${clickGame.clicks}\nCPS: ${finalCPS}\nBest: ${clickGame.highScores[0]}`);
+    
+    // Celebration for good scores
+    if (clickGame.clicks > 50) {
+        launchConfetti();
     }
+}
+
+function updateHighScores(score) {
+    clickGame.highScores.push(score);
+    clickGame.highScores.sort((a, b) => b - a);
+    clickGame.highScores = clickGame.highScores.slice(0, 3);
     
-    // Show result
-    alert(`Click Challenge Complete!\n\nClicks: ${clickGame.clicks}\nCPS: ${clickGame.cps}\nBest: ${clickGame.bestScore}`);
+    // Update high score display
+    document.getElementById('click-highscore').textContent = clickGame.highScores[0];
+    
+    // Save to localStorage
+    localStorage.setItem('clickHighScores', JSON.stringify(clickGame.highScores));
 }
 
-function resetClickGame() {
-    clickGame.bestScore = 0;
-    document.getElementById('click-best').textContent = '0';
-    localStorage.removeItem('clickBestScore');
+function resetClickScores() {
+    clickGame.highScores = [0, 0, 0];
+    document.getElementById('click-highscore').textContent = '0';
+    localStorage.removeItem('clickHighScores');
+    
+    alert('High scores cleared!');
 }
 
-// Reaction Game Variables
-let reactionGame = {
-    waiting: false,
-    startTime: null,
-    reactionTimes: [],
-    bestTime: null,
-    averageTime: null
-};
-
-function initReactionGame() {
+// ===== REACTION GAME =====
+function initializeReactionGame() {
     const startBtn = document.getElementById('start-reaction');
     const resetBtn = document.getElementById('reset-reaction');
     const reactionArea = document.getElementById('reaction-area');
@@ -333,13 +431,12 @@ function startReactionTest() {
     if (reactionGame.waiting) return;
     
     const reactionArea = document.getElementById('reaction-area');
-    const reactionText = document.getElementById('reaction-text');
+    const reactionText = document.querySelector('.reaction-timer');
     
     // Set to waiting state
     reactionGame.waiting = true;
     reactionArea.classList.add('waiting');
     reactionText.textContent = 'Wait for green...';
-    document.getElementById('reaction-time').textContent = '0.00s';
     
     // Random delay between 2-5 seconds
     const delay = 2000 + Math.random() * 3000;
@@ -363,10 +460,11 @@ function handleReactionClick() {
         const reactionTime = (Date.now() - reactionGame.startTime) / 1000;
         
         // Update display
-        document.getElementById('reaction-time').textContent = reactionTime.toFixed(2) + 's';
+        document.getElementById('reaction-last').textContent = reactionTime.toFixed(2) + 's';
         
         // Store reaction time
         reactionGame.reactionTimes.push(reactionTime);
+        reactionGame.attempts++;
         
         // Update best time
         if (!reactionGame.bestTime || reactionTime < reactionGame.bestTime) {
@@ -378,18 +476,20 @@ function handleReactionClick() {
         const sum = reactionGame.reactionTimes.reduce((a, b) => a + b, 0);
         reactionGame.averageTime = sum / reactionGame.reactionTimes.length;
         document.getElementById('reaction-avg').textContent = reactionGame.averageTime.toFixed(2) + 's';
+        document.getElementById('reaction-attempts').textContent = reactionGame.attempts;
         
         // Save stats
         localStorage.setItem('reactionStats', JSON.stringify({
             bestTime: reactionGame.bestTime,
             averageTime: reactionGame.averageTime,
-            reactionTimes: reactionGame.reactionTimes.slice(-20) // Keep last 20 attempts
+            reactionTimes: reactionGame.reactionTimes.slice(-20), // Keep last 20 attempts
+            attempts: reactionGame.attempts
         }));
         
         // Reset for next attempt
         reactionGame.waiting = false;
         reactionArea.classList.remove('ready');
-        document.getElementById('reaction-text').textContent = 'Click to Start';
+        document.querySelector('.reaction-timer').textContent = 'Click to Start';
         
         // Show feedback
         let feedback = '';
@@ -405,10 +505,10 @@ function handleReactionClick() {
         // Clicked too soon
         reactionGame.waiting = false;
         reactionArea.classList.remove('waiting');
-        document.getElementById('reaction-text').textContent = 'Too Soon!';
+        document.querySelector('.reaction-timer').textContent = 'Too Soon!';
         
         setTimeout(() => {
-            document.getElementById('reaction-text').textContent = 'Click to Start';
+            document.querySelector('.reaction-timer').textContent = 'Click to Start';
         }, 1000);
     } else {
         // Start new test
@@ -420,10 +520,12 @@ function resetReactionStats() {
     reactionGame.reactionTimes = [];
     reactionGame.bestTime = null;
     reactionGame.averageTime = null;
+    reactionGame.attempts = 0;
     
+    document.getElementById('reaction-last').textContent = '0.00s';
     document.getElementById('reaction-best').textContent = '0.00s';
     document.getElementById('reaction-avg').textContent = '0.00s';
-    document.getElementById('reaction-time').textContent = '0.00s';
+    document.getElementById('reaction-attempts').textContent = '0';
     
     localStorage.removeItem('reactionStats');
     
@@ -431,118 +533,305 @@ function resetReactionStats() {
 }
 
 // ===== QUIZ SYSTEM =====
-const quizQuestions = [
-    // Python Basics
-    {
-        topic: "Python Basics",
-        question: "Which keyword defines a function in Python?",
-        options: ["def", "function", "define", "func"],
-        correct: 0,
-        explanation: "The 'def' keyword is used to define functions."
-    },
-    {
-        topic: "Python Basics",
-        question: "How do you create a list?",
-        options: ["[]", "()", "{}", "<>"],
-        correct: 0,
-        explanation: "Square brackets [] create lists."
-    },
-    {
-        topic: "Python Basics",
-        question: "Which method removes string whitespace?",
-        options: ["strip()", "trim()", "clean()", "remove()"],
-        correct: 0,
-        explanation: "strip() removes whitespace from both ends."
-    },
-    {
-        topic: "Python Basics",
-        question: "What does ** operator do?",
-        options: ["Exponentiation", "Multiplication", "Comment", "Division"],
-        correct: 0,
-        explanation: "** is the exponentiation operator."
-    },
-    // Python OOP
-    {
-        topic: "Python OOP",
-        question: "Which method is the constructor?",
-        options: ["__init__", "__new__", "__start__", "__create__"],
-        correct: 0,
-        explanation: "__init__ initializes new objects."
-    },
-    {
-        topic: "Python OOP",
-        question: "What does 'self' represent?",
-        options: ["Current instance", "The class", "Parent class", "Global object"],
-        correct: 0,
-        explanation: "'self' refers to the instance."
-    },
-    {
-        topic: "Python OOP",
-        question: "How do you create a class?",
-        options: ["class MyClass:", "class MyClass()", "class MyClass{}", "MyClass class"],
-        correct: 0,
-        explanation: "Syntax: 'class ClassName:'"
-    },
-    // C++ Basics
-    {
-        topic: "C++ Basics",
-        question: "Which operator declares a pointer?",
-        options: ["*", "&", "->", "::"],
-        correct: 0,
-        explanation: "* declares a pointer."
-    },
-    {
-        topic: "C++ Basics",
-        question: "How to output in C++?",
-        options: ["cout <<", "print()", "System.out.println", "console.log"],
-        correct: 0,
-        explanation: "cout with << operator."
-    },
-    {
-        topic: "C++ Basics",
-        question: "Which is correct main function?",
-        options: ["int main()", "void main()", "main()", "function main()"],
-        correct: 0,
-        explanation: "int main() is standard."
-    }
-];
-
-let currentQuestionIndex = 0;
-let quizScore = 0;
-let userAnswers = [];
-
-function initQuiz() {
-    // Initialize quiz
-    shuffleQuestions();
-    displayQuestion();
+function initializeQuiz() {
+    // Initialize quiz database
+    initializeQuizDatabase();
     
-    // Setup navigation
-    document.getElementById('prev-btn')?.addEventListener('click', showPreviousQuestion);
-    document.getElementById('next-btn')?.addEventListener('click', showNextQuestion);
+    // Quiz navigation buttons
+    document.getElementById('prev-question')?.addEventListener('click', showPreviousQuestion);
+    document.getElementById('next-question')?.addEventListener('click', showNextQuestion);
+    document.getElementById('submit-quiz')?.addEventListener('click', submitQuiz);
+    document.getElementById('restart-quiz')?.addEventListener('click', startNewQuiz);
 }
 
-function shuffleQuestions() {
-    // Create a copy and shuffle
-    const shuffled = [...quizQuestions];
-    for (let i = shuffled.length - 1; i > 0; i--) {
+function initializeQuizDatabase() {
+    // Python Basics (10 questions)
+    const pythonBasics = [
+        {
+            topic: "Python Basics",
+            question: "Which keyword is used to define a function in Python?",
+            options: ["def", "function", "define", "func"],
+            correct: 0,
+            explanation: "The 'def' keyword is used to define functions. Example: def my_function():"
+        },
+        {
+            topic: "Python Basics",
+            question: "How do you create a list in Python?",
+            options: ["[]", "()", "{}", "<>"],
+            correct: 0,
+            explanation: "Square brackets [] create lists. Example: my_list = [1, 2, 3]"
+        },
+        {
+            topic: "Python Basics",
+            question: "Which method removes whitespace from both ends of a string?",
+            options: ["strip()", "trim()", "clean()", "remove()"],
+            correct: 0,
+            explanation: "strip() removes whitespace from both ends. lstrip() and rstrip() remove from left/right only."
+        },
+        {
+            topic: "Python Basics",
+            question: "What is the output of: print(2 ** 3)?",
+            options: ["8", "6", "9", "23"],
+            correct: 0,
+            explanation: "** is the exponentiation operator. 2 ** 3 means 2 raised to the power of 3, which is 8."
+        },
+        {
+            topic: "Python Basics",
+            question: "Which loop goes through a sequence in Python?",
+            options: ["for loop", "while loop", "do-while loop", "repeat loop"],
+            correct: 0,
+            explanation: "for loop iterates through sequences. Python doesn't have do-while or repeat loops."
+        },
+        {
+            topic: "Python Basics",
+            question: "How do you get the length of a list?",
+            options: ["len(list)", "list.length", "list.size", "length(list)"],
+            correct: 0,
+            explanation: "len() is a built-in function that works with lists, strings, tuples, etc."
+        },
+        {
+            topic: "Python Basics",
+            question: "Which data type is mutable?",
+            options: ["List", "Tuple", "String", "Integer"],
+            correct: 0,
+            explanation: "Lists are mutable (can be changed). Tuples and strings are immutable."
+        },
+        {
+            topic: "Python Basics",
+            question: "What does // operator do?",
+            options: ["Integer division", "Float division", "Modulus", "Exponentiation"],
+            correct: 0,
+            explanation: "// performs floor division (integer division). / performs float division."
+        },
+        {
+            topic: "Python Basics",
+            question: "How do you convert to integer?",
+            options: ["int()", "Integer()", "toInt()", "parseInt()"],
+            correct: 0,
+            explanation: "int() converts strings/floats to integers. float() and str() are similar."
+        },
+        {
+            topic: "Python Basics",
+            question: "What does range(5) generate?",
+            options: ["0,1,2,3,4", "1,2,3,4,5", "0,1,2,3,4,5", "5 numbers starting from 1"],
+            correct: 0,
+            explanation: "range(5) generates 0-4. range(1,6) would generate 1-5."
+        }
+    ];
+    
+    // Python OOP (12 questions)
+    const pythonOOP = [
+        {
+            topic: "Python OOP",
+            question: "Which method is the constructor?",
+            options: ["__init__", "__new__", "__start__", "__create__"],
+            correct: 0,
+            explanation: "__init__ initializes new objects. __new__ actually creates them (less common)."
+        },
+        {
+            topic: "Python OOP",
+            question: "What does 'self' represent?",
+            options: ["Current instance", "The class", "Parent class", "Global object"],
+            correct: 0,
+            explanation: "'self' refers to the instance calling the method (like 'this' in other languages)."
+        },
+        {
+            topic: "Python OOP",
+            question: "How do you create a class?",
+            options: ["class MyClass:", "class MyClass()", "class MyClass{}", "MyClass class"],
+            correct: 0,
+            explanation: "Syntax: 'class ClassName:' Parentheses only needed for inheritance."
+        },
+        {
+            topic: "Python OOP",
+            question: "Which is used for inheritance?",
+            options: ["class Child(Parent):", "extends Parent", "inherits Parent", "Child : Parent"],
+            correct: 0,
+            explanation: "Python uses parentheses: class Child(Parent, AnotherParent):"
+        },
+        {
+            topic: "Python OOP",
+            question: "How do you call a parent method?",
+            options: ["super().method()", "parent.method()", "self.parent()", "Parent.method()"],
+            correct: 0,
+            explanation: "super() gives access to parent class methods. Essential for method overriding."
+        },
+        {
+            topic: "Python OOP",
+            question: "What is encapsulation?",
+            options: ["Bundling data/methods", "Multiple inheritance", "Method overloading", "Dynamic typing"],
+            correct: 0,
+            explanation: "Encapsulation hides implementation details and groups related code."
+        },
+        {
+            topic: "Python OOP",
+            question: "How to make a private attribute?",
+            options: ["__attribute", "_attribute", "private attribute", "#attribute"],
+            correct: 0,
+            explanation: "Double underscore __ makes it name-mangled. Single underscore _ is convention."
+        },
+        {
+            topic: "Python OOP",
+            question: "What is polymorphism?",
+            options: ["Same interface, different implementation", "Hiding complexity", "Inheritance chain", "Data binding"],
+            correct: 0,
+            explanation: "Polymorphism allows objects of different types to respond to same method."
+        },
+        {
+            topic: "Python OOP",
+            question: "Which is a magic method?",
+            options: ["__str__", "__magic__", "__special__", "__method__"],
+            correct: 0,
+            explanation: "Magic methods have double underscores. __str__ defines string representation."
+        },
+        {
+            topic: "Python OOP",
+            question: "What does @staticmethod do?",
+            options: ["Defines static method", "Defines class method", "Defines private method", "Defines abstract method"],
+            correct: 0,
+            explanation: "@staticmethod doesn't receive self or cls. Used for utility functions."
+        },
+        {
+            topic: "Python OOP",
+            question: "What is method overriding?",
+            options: ["Redefining parent method", "Creating new method", "Hiding method", "Deleting method"],
+            correct: 0,
+            explanation: "Child class provides specific implementation of parent's method."
+        },
+        {
+            topic: "Python OOP",
+            question: "What is the purpose of __str__ method?",
+            options: ["String representation", "Initialization", "Destruction", "Comparison"],
+            correct: 0,
+            explanation: "__str__ returns a string representation of the object, used by print() and str()."
+        }
+    ];
+    
+    // C++ Basics (11 questions)
+    const cppBasics = [
+        {
+            topic: "C++ Basics",
+            question: "Which operator declares a pointer?",
+            options: ["*", "&", "->", "::"],
+            correct: 0,
+            explanation: "* declares a pointer. & gets address. -> accesses members through pointer."
+        },
+        {
+            topic: "C++ Basics",
+            question: "How to output in C++?",
+            options: ["cout <<", "print()", "System.out.println", "console.log"],
+            correct: 0,
+            explanation: "cout with << operator. Requires #include <iostream> and using namespace std;"
+        },
+        {
+            topic: "C++ Basics",
+            question: "Which is correct main function?",
+            options: ["int main()", "void main()", "main()", "function main()"],
+            correct: 0,
+            explanation: "int main() is standard. Returns 0 for success, non-zero for error."
+        },
+        {
+            topic: "C++ Basics",
+            question: "What does #include do?",
+            options: ["Includes header file", "Imports library", "Links library", "Defines macro"],
+            correct: 0,
+            explanation: "#include copies header file contents. Example: #include <iostream>"
+        },
+        {
+            topic: "C++ Basics",
+            question: "How to allocate memory dynamically?",
+            options: ["new", "malloc", "alloc", "create"],
+            correct: 0,
+            explanation: "new allocates memory, returns pointer. delete frees it. C++ style, not malloc."
+        },
+        {
+            topic: "C++ Basics",
+            question: "Which is a reference?",
+            options: ["int& x", "int* x", "int x", "ref int x"],
+            correct: 0,
+            explanation: "& after type creates reference (alias for variable). Must be initialized."
+        },
+        {
+            topic: "C++ Basics",
+            question: "What is :: operator?",
+            options: ["Scope resolution", "Pointer access", "Reference", "Namespace"],
+            correct: 0,
+            explanation: ":: accesses global scope or class members. Example: std::cout, Class::method()"
+        },
+        {
+            topic: "C++ Basics",
+            question: "How to create a class?",
+            options: ["class MyClass {}", "class MyClass:", "MyClass class {}", "class: MyClass"],
+            correct: 0,
+            explanation: "C++ uses braces {} and semicolon after class definition."
+        },
+        {
+            topic: "C++ Basics",
+            question: "What is cin?",
+            options: ["Standard input", "Standard output", "Console input", "Character input"],
+            correct: 0,
+            explanation: "cin with >> operator reads input. Example: cin >> variable;"
+        },
+        {
+            topic: "C++ Basics",
+            question: "Which loop is NOT in C++?",
+            options: ["for...in", "for", "while", "do...while"],
+            correct: 0,
+            explanation: "C++ has for, while, do...while. for...in is from Python/JavaScript."
+        },
+        {
+            topic: "C++ Basics",
+            question: "What does const do?",
+            options: ["Makes variable immutable", "Declares constant", "Defines function", "Creates reference"],
+            correct: 0,
+            explanation: "const makes variable read-only. Must be initialized. Example: const int x = 5;"
+        }
+    ];
+    
+    // Combine all questions
+    quizQuestions = [...pythonBasics, ...pythonOOP, ...cppBasics];
+}
+
+function startNewQuiz() {
+    // Reset quiz state
+    currentQuestionIndex = 0;
+    userScore = 0;
+    userAnswers = new Array(quizQuestions.length).fill(null);
+    quizStarted = true;
+    
+    // Shuffle questions
+    shuffleArray(quizQuestions);
+    
+    // Update UI
+    document.getElementById('quiz-results').style.display = 'none';
+    document.querySelector('.quiz-body').style.display = 'block';
+    document.querySelector('.quiz-footer').style.display = 'flex';
+    
+    // Display first question
+    displayQuestion();
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    // Use first 10 questions
-    return shuffled.slice(0, 10);
+    return array;
 }
 
 function displayQuestion() {
-    if (currentQuestionIndex >= quizQuestions.length) return;
+    if (quizQuestions.length === 0 || currentQuestionIndex >= quizQuestions.length) {
+        return;
+    }
     
     const question = quizQuestions[currentQuestionIndex];
     
-    // Update UI
+    // Update UI elements
     document.getElementById('topic-badge').textContent = question.topic;
     document.getElementById('current-q').textContent = currentQuestionIndex + 1;
     document.getElementById('total-q').textContent = quizQuestions.length;
     document.getElementById('question-text').textContent = question.question;
-    document.getElementById('quiz-score').textContent = quizScore;
+    document.getElementById('quiz-score').textContent = userScore;
     
     // Display options
     const optionsContainer = document.getElementById('options-container');
@@ -551,7 +840,7 @@ function displayQuestion() {
     question.options.forEach((option, index) => {
         const optionBtn = document.createElement('button');
         optionBtn.className = 'quiz-option';
-        optionBtn.innerHTML = `${String.fromCharCode(65 + index)}. ${option}`;
+        optionBtn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + index)}.</span> ${option}`;
         optionBtn.dataset.index = index;
         
         // Mark if previously answered
@@ -568,25 +857,29 @@ function displayQuestion() {
         optionsContainer.appendChild(optionBtn);
     });
     
+    // Update explanation
+    if (userAnswers[currentQuestionIndex] !== null) {
+        document.getElementById('explanation-text').textContent = question.explanation;
+    } else {
+        document.getElementById('explanation-text').textContent = "Select an answer to see explanation";
+    }
+    
     // Update button states
     updateQuizButtons();
 }
 
 function selectAnswer(selectedIndex) {
-    if (userAnswers[currentQuestionIndex] !== undefined) return;
+    if (userAnswers[currentQuestionIndex] !== null) return; // Already answered
     
     const question = quizQuestions[currentQuestionIndex];
     userAnswers[currentQuestionIndex] = selectedIndex;
     
-    // Update score
+    // Update score if correct
     if (selectedIndex === question.correct) {
-        quizScore++;
+        userScore++;
     }
     
     // Update UI
-    document.getElementById('quiz-score').textContent = quizScore;
-    
-    // Mark options
     const options = document.querySelectorAll('.quiz-option');
     options.forEach((opt, index) => {
         if (index === selectedIndex) {
@@ -599,15 +892,12 @@ function selectAnswer(selectedIndex) {
         }
     });
     
+    // Show explanation
+    document.getElementById('explanation-text').textContent = question.explanation;
+    document.getElementById('quiz-score').textContent = userScore;
+    
     // Auto-advance after delay
-    setTimeout(() => {
-        if (currentQuestionIndex < quizQuestions.length - 1) {
-            currentQuestionIndex++;
-            displayQuestion();
-        } else {
-            endQuiz();
-        }
-    }, 1000);
+    setTimeout(showNextQuestion, 1500);
 }
 
 function showPreviousQuestion() {
@@ -622,41 +912,112 @@ function showNextQuestion() {
         currentQuestionIndex++;
         displayQuestion();
     } else {
-        endQuiz();
+        // Last question - suggest submission
+        alert('Last question! Click "Submit Quiz" to finish.');
     }
 }
 
 function updateQuizButtons() {
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-question');
+    const nextBtn = document.getElementById('next-question');
     
     if (prevBtn) {
         prevBtn.disabled = currentQuestionIndex === 0;
     }
     
     if (nextBtn) {
-        nextBtn.textContent = currentQuestionIndex === quizQuestions.length - 1 ? 'Finish' : 'Next';
+        nextBtn.textContent = currentQuestionIndex === quizQuestions.length - 1 ? 'Last Question' : 'Next';
     }
 }
 
-function endQuiz() {
-    const percentage = (quizScore / quizQuestions.length) * 100;
+function submitQuiz() {
+    // Calculate final score
+    let correct = 0;
+    let wrong = 0;
+    let skipped = 0;
     
+    userAnswers.forEach((answer, index) => {
+        const question = quizQuestions[index];
+        if (!question) return;
+        
+        if (answer === null) {
+            skipped++;
+        } else if (answer === question.correct) {
+            correct++;
+        } else {
+            wrong++;
+        }
+    });
+    
+    userScore = correct;
+    
+    // Show results
+    document.getElementById('final-score').textContent = userScore;
+    document.getElementById('max-score').textContent = quizQuestions.length;
+    
+    // Generate result message
     let message = "";
-    if (percentage >= 90) message = "🏆 Outstanding! Programming genius!";
-    else if (percentage >= 80) message = "🎯 Excellent! Strong CS fundamentals!";
-    else if (percentage >= 70) message = "👍 Great job! Solid understanding!";
-    else if (percentage >= 60) message = "💡 Good effort! Keep practicing!";
-    else message = "🌟 The learning journey continues!";
+    const percentage = (userScore / quizQuestions.length) * 100;
     
-    alert(`Quiz Complete!\n\nScore: ${quizScore}/${quizQuestions.length} (${percentage.toFixed(1)}%)\n\n${message}`);
+    if (percentage >= 90) {
+        message = "🏆 OUTSTANDING! You're a programming genius! Fatima would be so impressed!";
+    } else if (percentage >= 80) {
+        message = "🎯 EXCELLENT! Strong CS fundamentals! You really know your stuff!";
+    } else if (percentage >= 70) {
+        message = "👍 GREAT JOB! Solid understanding of programming concepts!";
+    } else if (percentage >= 60) {
+        message = "💡 GOOD EFFORT! Keep practicing and you'll master it!";
+    } else if (percentage >= 50) {
+        message = "🌟 NOT BAD! The journey of a thousand codes begins with a single variable!";
+    } else {
+        message = "📚 KEEP LEARNING! Every expert was once a beginner. Don't give up!";
+    }
     
-    // Celebration for good scores
+    document.getElementById('result-message').textContent = message;
+    
+    // Show results container
+    document.getElementById('quiz-results').style.display = 'block';
+    document.querySelector('.quiz-body').style.display = 'none';
+    document.querySelector('.quiz-footer').style.display = 'none';
+    
+    // Launch confetti for good scores
     if (percentage >= 70) {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
+        setTimeout(() => {
+            launchConfetti();
+        }, 500);
+    }
+    
+    // Play celebration sound for high scores
+    if (percentage >= 80 && audioElement) {
+        audioElement.currentTime = 0;
+        audioElement.play().catch(e => console.log("Audio play blocked"));
+    }
+    
+    alert(`Quiz submitted! Score: ${userScore}/${quizQuestions.length} (${percentage.toFixed(1)}%)`);
+}
+
+// ===== UTILITY FUNCTIONS =====
+function loadPreferences() {
+    // Load theme preference
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+        enableDarkTheme();
+    }
+    
+    // Load music preference
+    const music = localStorage.getItem('musicEnabled');
+    if (music === 'true') {
+        isMusicPlaying = true;
+    }
+    
+    // Load click game scores
+    const scores = localStorage.getItem('clickHighScores');
+    if (scores) {
+        clickGame.highScores = JSON.parse(scores);
+        document.getElementById('click-highscore').textContent = clickGame.highScores[0];
     }
 }
+
+// ===== FINAL INITIALIZATION =====
+console.log("All systems initialized! 🚀");
+console.log("🎂 Happy Birthday Fatima! 🎉");
