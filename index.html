@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 18th Birthday, Fatima! 🎂</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#message">Message</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#game">Game</a>
+        </nav>
+
+        <!-- Main Content -->
+        <section id="home" class="section active">
+            <h1>🎉 Happy 18th Birthday, Fatima! 🎉</h1>
+            <p class="tagline">Welcome to your personal birthday website! 🥳</p>
+            <button id="confetti-btn" class="btn">Launch Confetti! 🎊</button>
+            <canvas id="confetti-canvas"></canvas>
+        </section>
+
+        <section id="message" class="section">
+            <h2>💌 A Special Message</h2>
+            <div class="message-card">
+                <p>Dear Fatima,</p>
+                <p>On your 18th birthday, I wanted to create something unique for you—because you deserve it! This isn't a template; it's code written just for you. 🧑‍💻</p>
+                <p>May your year ahead be filled with incredible code, bug-free projects, and dreams that compile on the first try! ✨</p>
+                <p>Cheers to adulthood and all the amazing things to come! 🥂</p>
+                <p class="signature">— From your CS class friend</p>
+            </div>
+        </section>
+
+        <section id="gallery" class="section">
+            <h2>📸 Memory Gallery</h2>
+            <div class="gallery">
+                <!-- Add your images here -->
+                <div class="photo-placeholder"><span>Photo 1</span></div>
+                <div class="photo-placeholder"><span>Photo 2</span></div>
+                <div class="photo-placeholder"><span>Photo 3</span></div>
+            </div>
+        </section>
+
+        <section id="game" class="section">
+            <h2>🎮 Click Challenge</h2>
+            <p>How many times can you click in 10 seconds?</p>
+            <div class="game-box">
+                <div class="score">Score: <span id="score">0</span></div>
+                <button id="click-btn" class="btn-game">CLICK ME FAST!</button>
+                <button id="reset-btn" class="btn-game secondary">Reset</button>
+            </div>
+        </section>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="music-toggle" class="control-btn">
+                <i class="fas fa-music"></i> <span>Play Music</span>
+            </button>
+            <button id="theme-toggle" class="control-btn">
+                <i class="fas fa-moon"></i> <span>Dark Mode</span>
+            </button>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="assets/bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
