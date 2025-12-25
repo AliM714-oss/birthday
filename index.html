@@ -6,71 +6,166 @@
     <title>Happy 18th Birthday, Fatima! 🎂</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <!-- Navigation -->
         <nav class="navbar">
-            <a href="#home">Home</a>
-            <a href="#message">Message</a>
+            <a href="#home" class="active">Home</a>
             <a href="#gallery">Gallery</a>
-            <a href="#game">Game</a>
+            <a href="#quiz">CS Quiz</a>
+            <a href="#message">Message</a>
         </nav>
 
-        <!-- Main Content -->
+        <!-- Hero Section -->
         <section id="home" class="section active">
-            <h1>🎉 Happy 18th Birthday, Fatima! 🎉</h1>
-            <p class="tagline">Welcome to your personal birthday website! 🥳</p>
-            <button id="confetti-btn" class="btn">Launch Confetti! 🎊</button>
-            <canvas id="confetti-canvas"></canvas>
-        </section>
-
-        <section id="message" class="section">
-            <h2>💌 A Special Message</h2>
-            <div class="message-card">
-                <p>Dear Fatima,</p>
-                <p>On your 18th birthday, I wanted to create something unique for you—because you deserve it! This isn't a template; it's code written just for you. 🧑‍💻</p>
-                <p>May your year ahead be filled with incredible code, bug-free projects, and dreams that compile on the first try! ✨</p>
-                <p>Cheers to adulthood and all the amazing things to come! 🥂</p>
-                <p class="signature">— From your CS class friend</p>
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>🎉 Happy 18th Birthday, Fatima! 🥳</h1>
+                    <p class="tagline">A website coded just for you by your CS class friend! 💻✨</p>
+                    <button id="confetti-btn" class="btn-celebrate">
+                        <i class="fas fa-birthday-cake"></i> Launch Confetti!
+                    </button>
+                </div>
+                <div class="hero-image">
+                    <img src="assets/fatima-main.png" alt="Fatima on her birthday" id="main-photo">
+                </div>
             </div>
         </section>
 
+        <!-- Gallery Section -->
         <section id="gallery" class="section">
-            <h2>📸 Memory Gallery</h2>
-            <div class="gallery">
-                <!-- Add your images here -->
-                <div class="photo-placeholder"><span>Photo 1</span></div>
-                <div class="photo-placeholder"><span>Photo 2</span></div>
-                <div class="photo-placeholder"><span>Photo 3</span></div>
+            <h2><i class="fas fa-images"></i> Memory Gallery</h2>
+            <p class="subtitle">These moments are forever! 📸</p>
+            <div class="gallery-grid">
+                <div class="photo-card">
+                    <img src="assets/fatima1.png" alt="Happy moment with Fatima" class="gallery-img">
+                    <div class="photo-caption">Awesome Times! 😊</div>
+                </div>
+                <div class="photo-card">
+                    <img src="assets/fatima2.png" alt="Celebrating together" class="gallery-img">
+                    <div class="photo-caption">Best Memories! ✨</div>
+                </div>
+                <div class="photo-card">
+                    <img src="assets/fatima3.png" alt="Fun times in class" class="gallery-img">
+                    <div class="photo-caption">CS Class Buddies! 💻</div>
+                </div>
             </div>
         </section>
 
-        <section id="game" class="section">
-            <h2>🎮 Click Challenge</h2>
-            <p>How many times can you click in 10 seconds?</p>
-            <div class="game-box">
-                <div class="score">Score: <span id="score">0</span></div>
-                <button id="click-btn" class="btn-game">CLICK ME FAST!</button>
-                <button id="reset-btn" class="btn-game secondary">Reset</button>
+        <!-- CS Quiz Section -->
+        <section id="quiz" class="section">
+            <h2><i class="fas fa-code"></i> CS Quiz Challenge</h2>
+            <p class="subtitle">Test your programming knowledge! Made for our CS class 🧑‍💻</p>
+            
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <div class="quiz-category" id="quiz-category">Python OOP</div>
+                    <div class="score-board">
+                        <i class="fas fa-star"></i> Score: 
+                        <span id="score">0</span>/<span id="total-questions">10</span>
+                    </div>
+                </div>
+                
+                <h3 id="question-text">Which of these is used to define a function in Python?</h3>
+                
+                <div id="options-container" class="options-container">
+                    <button class="option" data-index="0">A. def</button>
+                    <button class="option" data-index="1">B. function</button>
+                    <button class="option" data-index="2">C. define</button>
+                    <button class="option" data-index="3">D. func</button>
+                </div>
+                
+                <div class="quiz-footer">
+                    <div class="question-counter">
+                        Question <span id="current-question">1</span> of 10
+                    </div>
+                    <div class="quiz-controls">
+                        <button id="prev-btn" class="quiz-btn">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button id="next-btn" class="quiz-btn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button id="submit-btn" class="quiz-btn submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Quiz
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="explanation-box" class="explanation-box">
+                    <h4><i class="fas fa-lightbulb"></i> Explanation:</h4>
+                    <p id="explanation-text">In Python, 'def' keyword is used to define a function.</p>
+                </div>
+                
+                <div id="result-box" class="result-box" style="display: none;">
+                    <div class="result-header">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Quiz Complete!</h3>
+                    </div>
+                    <p class="final-score">Your Score: <span id="final-score">0</span>/10</p>
+                    <p id="result-message">Great job!</p>
+                    <button id="restart-btn" class="quiz-btn restart-btn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- Controls -->
-        <div class="controls">
-            <button id="music-toggle" class="control-btn">
-                <i class="fas fa-music"></i> <span>Play Music</span>
-            </button>
-            <button id="theme-toggle" class="control-btn">
-                <i class="fas fa-moon"></i> <span>Dark Mode</span>
-            </button>
-        </div>
+        <!-- Message Section -->
+        <section id="message" class="section">
+            <h2><i class="fas fa-envelope"></i> A Special Message</h2>
+            <div class="message-card">
+                <div class="message-header">
+                    <i class="fas fa-heart"></i>
+                    <h3>For Fatima, on your 18th</h3>
+                </div>
+                <div class="message-content">
+                    <p>Dear Fatima,</p>
+                    <p>Happy 18th birthday! 🚀 As fellow CS students, I wanted to create something unique for you - not just a gift, but an experience built with code.</p>
+                    <p>This website represents our shared passion for technology. Every line of HTML, CSS, and JavaScript was written with you in mind.</p>
+                    <p>May your journey into adulthood be filled with clean code, bug-free projects, and dreams that compile on the first try! Remember: in the algorithm of life, you're the optimal solution. ✨</p>
+                    <p class="message-quote">"The best way to predict the future is to code it."</p>
+                    <div class="message-footer">
+                        <p class="signature">— Your friend from CS class</p>
+                        <p class="date">Birthday 2025</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <p><i class="fas fa-code"></i> Made with ❤️ for Fatima's 18th Birthday</p>
+                <p class="footer-note">This website is hand-coded with HTML, CSS & JavaScript</p>
+            </div>
+        </footer>
     </div>
 
+    <!-- Control Buttons -->
+    <div class="controls">
+        <button id="music-toggle" class="control-btn">
+            <i class="fas fa-music"></i>
+            <span class="btn-text">Play Music</span>
+        </button>
+        <button id="theme-toggle" class="control-btn">
+            <i class="fas fa-moon"></i>
+            <span class="btn-text">Dark Mode</span>
+        </button>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Audio -->
     <audio id="bg-music" loop>
-        <source src="assets/bg-music.mp3" type="audio/mpeg">
+        <source src="assets/happy-birthday.mp3" type="audio/mpeg">
+        Your browser does not support audio
     </audio>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
 </body>
