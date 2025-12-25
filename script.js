@@ -470,28 +470,28 @@ function initMusic() {
     const musicBtn = document.getElementById('music-toggle');
     const audio = new Audio('assets/birthday-music.mp3');
     audio.loop = true;
-    audio.volume = 0.5;
     
-    if (musicBtn) {
-        const icon = musicBtn.querySelector('i');
-        const text = musicBtn.querySelector('span');
-        
-        musicBtn.addEventListener('click', function() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    icon.className = 'fas fa-volume-up';
-                    text.textContent = 'Pause Music';
-                }).catch(e => {
-                    console.log("Audio blocked:", e);
-                    text.textContent = 'Click to Enable';
+    let playing = false;
+    
+    musicBtn.addEventListener('click', function() {
+        if (!playing) {
+            // IMPORTANT: Must be in click handler for browsers to allow
+            audio.play()
+                .then(() => {
+                    playing = true;
+                    this.innerHTML = '<i class="fas fa-volume-up"></i> Pause Music';
+                })
+                .catch(e => {
+                    console.log("Browser blocked audio:", e);
+                    // Try one more time with user gesture
+                    this.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Click Again';
                 });
-            } else {
-                audio.pause();
-                icon.className = 'fas fa-music';
-                text.textContent = 'Play Music';
-            }
-        });
-    }
+        } else {
+            audio.pause();
+            playing = false;
+            this.innerHTML = '<i class="fas fa-music"></i> Play Music';
+        }
+    });
 }
 
 // ===== THEME TOGGLE =====
