@@ -3,111 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Fatima! 🎂</title>
+    <title>Happy 18th Birthday Fatima! 🎂</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <a href="#home" class="nav-btn active">Home</a>
-        <a href="#gallery" class="nav-btn">Gallery</a>
-        <a href="#quiz" class="nav-btn">CS Quiz</a>
-        <a href="#message" class="nav-btn">Message</a>
+        <div class="nav-container">
+            <a href="#home" class="nav-btn active"><i class="fas fa-home"></i> Home</a>
+            <a href="#gallery" class="nav-btn"><i class="fas fa-images"></i> Gallery</a>
+            <a href="#games" class="nav-btn"><i class="fas fa-gamepad"></i> Games</a>
+            <a href="#quiz" class="nav-btn"><i class="fas fa-code"></i> CS Quiz</a>
+            <a href="#message" class="nav-btn"><i class="fas fa-envelope"></i> Message</a>
+        </div>
     </nav>
 
     <!-- Home Section -->
     <section id="home" class="section active">
-        <div class="welcome-box">
-            <h1 class="welcome-title">🎉 Welcome Fatima! 🎉</h1>
-            <p class="welcome-text">Happy 18th Birthday! This interactive website is your digital gift.</p>
-            <button id="confetti-btn" class="action-btn">Launch Confetti! 🎊</button>
-        </div>
-        <div class="birthday-card">
-            <h2>🎂 Happy Birthday! 🥳</h2>
-            <p>To the smartest CS student I know! May your code always compile on the first try! 💻</p>
+        <div class="container">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">🎉 Happy 18th Birthday, Fatima! 🥳</h1>
+                    <p class="hero-subtitle">Welcome to your personalized digital gift!</p>
+                    <p class="hero-text">This website was coded from scratch just for you, combining our shared love for technology and creativity.</p>
+                    
+                    <div class="hero-features">
+                        <div class="feature">
+                            <i class="fas fa-gift"></i>
+                            <span>Interactive Games</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-images"></i>
+                            <span>Memory Gallery</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-brain"></i>
+                            <span>CS Knowledge Quiz</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-music"></i>
+                            <span>Birthday Music</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="confetti-btn" class="btn-primary">
+                            <i class="fas fa-birthday-cake"></i> Launch Confetti!
+                        </button>
+                        <button id="wish-btn" class="btn-secondary">
+                            <i class="fas fa-heart"></i> Send Birthday Wish
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <div class="image-frame">
+                        <img src="assets/fatima1.png" alt="Fatima" id="main-photo">
+                        <div class="photo-badge">You're 18! 🎈</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Gallery Section -->
     <section id="gallery" class="section">
-        <h2>📸 Memory Gallery</h2>
-        <div class="gallery-grid">
-            <div class="photo-frame">
-                <img src="assets/fatima1.png" alt="Happy moment" class="gallery-img">
-                <p class="img-caption">Great Times! 😊</p>
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-images"></i> Memory Gallery</h2>
+            <p class="section-subtitle">Some of our favorite moments together 📸</p>
+            
+            <div class="gallery-container">
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="assets/fatima1.png" alt="Memory 1" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>CS Class Days</h3>
+                        <p>Debugging code together! 💻</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="assets/fatima2.png" alt="Memory 2" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Happy Times</h3>
+                        <p>Always smiling! 😊</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="assets/fatima3.png" alt="Memory 3" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Celebration</h3>
+                        <p>Making memories! ✨</p>
+                    </div>
+                </div>
             </div>
-            <div class="photo-frame">
-                <img src="assets/fatima2.png" alt="Celebration" class="gallery-img">
-                <p class="img-caption">Best Memories! ✨</p>
+            
+            <div class="gallery-controls">
+                <button id="prev-img" class="btn-small"><i class="fas fa-chevron-left"></i> Previous</button>
+                <button id="next-img" class="btn-small">Next <i class="fas fa-chevron-right"></i></button>
             </div>
-            <div class="photo-frame">
-                <img src="assets/fatima3.png" alt="Class buddies" class="gallery-img">
-                <p class="img-caption">CS Class! 💻</p>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section id="games" class="section">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-gamepad"></i> Birthday Games</h2>
+            <p class="section-subtitle">Try these fun games made just for you! 🎮</p>
+            
+            <div class="games-grid">
+                <!-- Game 1: Memory Card Match -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <i class="fas fa-brain"></i>
+                        <h3>Memory Match</h3>
+                    </div>
+                    <div class="game-description">
+                        <p>Match pairs of cards featuring birthday themes!</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-clock"></i> Time: <span id="memory-time">0s</span></span>
+                            <span><i class="fas fa-star"></i> Moves: <span id="memory-moves">0</span></span>
+                        </div>
+                    </div>
+                    <div class="game-controls">
+                        <button id="start-memory" class="btn-game">
+                            <i class="fas fa-play"></i> Start Game
+                        </button>
+                        <button id="reset-memory" class="btn-game btn-secondary">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                    <div id="memory-board" class="memory-board">
+                        <!-- Cards will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Game 2: Typing Speed Test -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <i class="fas fa-keyboard"></i>
+                        <h3>Typing Challenge</h3>
+                    </div>
+                    <div class="game-description">
+                        <p>Type CS terms as fast as you can!</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-tachometer-alt"></i> WPM: <span id="typing-wpm">0</span></span>
+                            <span><i class="fas fa-check-circle"></i> Accuracy: <span id="typing-accuracy">100%</span></span>
+                        </div>
+                    </div>
+                    <div class="typing-container">
+                        <div class="typing-display" id="typing-text">
+                            <p>Welcome to your birthday typing challenge! Type the text below:</p>
+                            <div class="text-to-type" id="text-to-type">
+                                Happy birthday Fatima! May your code always compile on first try.
+                            </div>
+                        </div>
+                        <div class="typing-input">
+                            <textarea id="typing-input" placeholder="Start typing here..."></textarea>
+                            <div class="typing-info">
+                                <span>Time: <span id="typing-time">60</span>s</span>
+                                <span>Words: <span id="typing-words">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-controls">
+                        <button id="start-typing" class="btn-game">
+                            <i class="fas fa-play"></i> Start Typing
+                        </button>
+                        <button id="reset-typing" class="btn-game btn-secondary">
+                            <i class="fas fa-stop"></i> Stop
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Game 3: Reaction Test -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Reaction Test</h3>
+                    </div>
+                    <div class="game-description">
+                        <p>Test how fast you can click when the color changes!</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-stopwatch"></i> Best: <span id="reaction-best">0.00s</span></span>
+                            <span><i class="fas fa-tachometer-alt"></i> Avg: <span id="reaction-avg">0.00s</span></span>
+                        </div>
+                    </div>
+                    <div class="reaction-container">
+                        <div class="reaction-area" id="reaction-area">
+                            <div class="reaction-instruction">
+                                <p>Wait for green, then click as fast as you can!</p>
+                                <div class="reaction-timer">Click to Start</div>
+                            </div>
+                        </div>
+                        <div class="reaction-results">
+                            <div class="result-item">
+                                <span>Last Reaction:</span>
+                                <strong id="reaction-last">0.00s</strong>
+                            </div>
+                            <div class="result-item">
+                                <span>Attempts:</span>
+                                <strong id="reaction-attempts">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-controls">
+                        <button id="start-reaction" class="btn-game">
+                            <i class="fas fa-play"></i> Start Test
+                        </button>
+                        <button id="reset-reaction" class="btn-game btn-secondary">
+                            <i class="fas fa-chart-bar"></i> Stats
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Game 4: Click Challenge -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <i class="fas fa-mouse-pointer"></i>
+                        <h3>Click Challenge</h3>
+                    </div>
+                    <div class="game-description">
+                        <p>How many times can you click in 10 seconds?</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-trophy"></i> High Score: <span id="click-highscore">0</span></span>
+                            <span><i class="fas fa-fire"></i> CPS: <span id="click-cps">0</span></span>
+                        </div>
+                    </div>
+                    <div class="click-container">
+                        <div class="click-area" id="click-area">
+                            <div class="click-counter">
+                                <h2 id="click-count">0</h2>
+                                <p>Clicks</p>
+                            </div>
+                            <div class="click-timer">
+                                <div class="timer-circle">
+                                    <span id="click-timer">10</span>s
+                                </div>
+                            </div>
+                        </div>
+                        <div class="click-leaderboard">
+                            <h4>Your Best Scores:</h4>
+                            <ol id="click-scores">
+                                <li>0 clicks</li>
+                                <li>0 clicks</li>
+                                <li>0 clicks</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="game-controls">
+                        <button id="start-click" class="btn-game">
+                            <i class="fas fa-play"></i> Start Clicking
+                        </button>
+                        <button id="reset-click" class="btn-game btn-secondary">
+                            <i class="fas fa-trash"></i> Clear Scores
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- CS Quiz Section -->
     <section id="quiz" class="section">
-        <div class="quiz-container">
-            <h2>🧠 CS Knowledge Challenge</h2>
-            <p class="quiz-subtitle">30 random questions from Python Basics, OOP & C++</p>
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-code"></i> CS Knowledge Challenge</h2>
+            <p class="section-subtitle">Test your programming skills with 30+ random questions!</p>
             
-            <div class="quiz-header">
-                <div class="topic-badge" id="topic-badge">Python Basics</div>
-                <div class="progress">
-                    Question: <span id="current-q">1</span>/<span id="total-q">30</span>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <div class="quiz-info">
+                        <div class="topic-badge" id="topic-badge">Python Basics</div>
+                        <div class="quiz-progress">
+                            Question <span id="current-q">1</span> of <span id="total-q">30</span>
+                        </div>
+                    </div>
+                    <div class="quiz-score">
+                        <i class="fas fa-star"></i>
+                        <span>Score: <strong id="quiz-score">0</strong></span>
+                    </div>
                 </div>
-            </div>
-            
-            <h3 id="question-text">Loading question...</h3>
-            
-            <div id="options-container" class="options-grid">
-                <!-- Options will be added by JavaScript -->
-            </div>
-            
-            <div class="quiz-controls">
-                <button id="prev-btn" class="quiz-btn"><i class="fas fa-arrow-left"></i> Previous</button>
-                <div class="score-display">
-                    Score: <span id="score-value">0</span>
+                
+                <div class="quiz-body">
+                    <h3 id="question-text">Loading question...</h3>
+                    
+                    <div id="options-container" class="options-grid">
+                        <!-- Options will be loaded by JavaScript -->
+                    </div>
+                    
+                    <div class="explanation-box">
+                        <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
+                        <p id="explanation-text">Select an answer to see the explanation</p>
+                    </div>
                 </div>
-                <button id="next-btn" class="quiz-btn">Next <i class="fas fa-arrow-right"></i></button>
-            </div>
-            
-            <div class="explanation-box">
-                <h4><i class="fas fa-info-circle"></i> Explanation:</h4>
-                <p id="explanation-text">Select an answer to see explanation here</p>
+                
+                <div class="quiz-footer">
+                    <div class="quiz-controls">
+                        <button id="prev-question" class="quiz-btn">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button id="next-question" class="quiz-btn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button id="submit-quiz" class="quiz-btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Quiz
+                        </button>
+                    </div>
+                    
+                    <div class="quiz-stats">
+                        <div class="stat-item">
+                            <span>Correct:</span>
+                            <strong id="stat-correct">0</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Wrong:</span>
+                            <strong id="stat-wrong">0</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Skipped:</span>
+                            <strong id="stat-skipped">0</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quiz-results" class="results-container" style="display: none;">
+                    <div class="results-header">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Quiz Complete!</h3>
+                    </div>
+                    <div class="results-body">
+                        <div class="result-score">
+                            <h2>Your Score</h2>
+                            <div class="score-circle">
+                                <span id="final-score">0</span>/<span id="max-score">30</span>
+                            </div>
+                        </div>
+                        <div class="result-message">
+                            <p id="result-message">Loading your results...</p>
+                            <div class="result-breakdown">
+                                <div class="breakdown-item">
+                                    <span>Python Basics:</span>
+                                    <strong id="breakdown-python">0/10</strong>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Python OOP:</span>
+                                    <strong id="breakdown-oop">0/12</strong>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>C++ Basics:</span>
+                                    <strong id="breakdown-cpp">0/11</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="results-footer">
+                        <button id="restart-quiz" class="btn-primary">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                        <button id="share-quiz" class="btn-secondary">
+                            <i class="fas fa-share-alt"></i> Share Results
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Message Section -->
     <section id="message" class="section">
-        <div class="message-card">
-            <h2>💌 A Message For You</h2>
-            <div class="message-content">
-                <p>Dear Fatima,</p>
-                <p>Happy 18th birthday! 🚀 As someone who prefers quiet conversations over big crowds , I wanted to express my wishes in a way that feels authentic to me - through code.</p>
-                <p>This website is my way of saying you're an amazing person and a brilliant CS student. Every bug we debugged together, every project we struggled with - those are my favorite memories.</p>
-                <p>May your journey ahead be filled with elegant algorithms, optimal solutions, and happiness that never needs debugging. ✨</p>
-                <div class="signature">
-                    <p>— Your quiet classmate,</p>
-                    <p class="name">Ali Madad</p>
+        <div class="container">
+            <div class="message-container">
+                <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> A Personal Message</h2>
+                <p class="section-subtitle">From your quiet classmate who speaks through code</p>
+                
+                <div class="message-card">
+                    <div class="message-header">
+                        <div class="message-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="message-title">
+                            <h3>For Fatima, on your 18th</h3>
+                            <p class="message-date">Birthday 2025</p>
+                        </div>
+                    </div>
+                    
+                    <div class="message-body">
+                        <div class="message-content">
+                            <p>Dear Fatima,</p>
+                            <p>Happy 18th birthday! 🚀 As we celebrate this milestone, I wanted to create something meaningful that combines our shared passion for technology. While I might be the quiet one in class (yes, that introvert who prefers observing from the back), I've always admired your intelligence and determination.</p>
+                            <p>This website represents more than just code - it's my way of saying you're an incredible person. Every line here was written with care, just like how we debug our CS projects together. I remember those late nights working on assignments, your patience when explaining concepts, and your brilliant solutions to complex problems.</p>
+                            <p>As you step into adulthood, may your life be filled with:</p>
+                            <ul class="message-list">
+                                <li><i class="fas fa-check-circle"></i> Code that compiles on the first try</li>
+                                <li><i class="fas fa-check-circle"></i> Algorithms that always find optimal solutions</li>
+                                <li><i class="fas fa-check-circle"></i> Projects that exceed all expectations</li>
+                                <li><i class="fas fa-check-circle"></i> Happiness that needs no debugging</li>
+                            </ul>
+                            <p>Remember, in the grand algorithm of life, you're already the optimal solution. Don't ever let imposter syndrome tell you otherwise. Your potential is as infinite as a while True loop (but hopefully with better exit conditions! 😄).</p>
+                            <blockquote class="message-quote">
+                                "The best way to predict the future is to invent it." – Alan Kay
+                            </blockquote>
+                            <p>Here's to inventing an amazing future together, one line of code at a time.</p>
+                        </div>
+                        
+                        <div class="message-footer">
+                            <div class="signature">
+                                <p>With admiration and code,</p>
+                                <h4>Ali Madad</h4>
+                                <p class="signature-note">(The quiet CS student who notices more than he says)</p>
+                            </div>
+                            <div class="message-seal">
+                                <div class="seal">
+                                    <span>18</span>
+                                    <small>Years</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="message-interactive">
+                        <h4><i class="fas fa-comment-alt"></i> Leave a Reply for Fatima</h4>
+                        <div class="reply-form">
+                            <textarea id="wish-input" placeholder="Type your birthday wish for Fatima here..."></textarea>
+                            <button id="submit-wish" class="btn-small">
+                                <i class="fas fa-paper-plane"></i> Add Wish
+                            </button>
+                        </div>
+                        <div id="wish-wall" class="wish-wall">
+                            <div class="wish-item">
+                                <p>🎉 Cheers to an amazing year ahead! You deserve all the happiness!</p>
+                                <span class="wish-author">– Anonymous Well-wisher</span>
+                            </div>
+                            <div class="wish-item">
+                                <p>💻 May your future be bug-free and full of successful deployments!</p>
+                                <span class="wish-author">– CS Classmate</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Controls -->
-    <div class="controls">
-        <button id="music-toggle" class="control-btn">
-            <i class="fas fa-music"></i> <span>Play Music</span>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3><i class="fas fa-birthday-cake"></i> Fatima's 18th</h3>
+                    <p>A digital gift crafted with code</p>
+                </div>
+                
+                <div class="footer-info">
+                    <p><i class="fas fa-code"></i> Built with HTML, CSS & JavaScript</p>
+                    <p><i class="fas fa-user"></i> Created by Ali Madad</p>
+                    <p><i class="fas fa-calendar"></i> Birthday 2025</p>
+                </div>
+                
+                <div class="footer-tech">
+                    <h4>Technologies Used:</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Canvas API</span>
+                        <span class="tech-tag">GitHub Pages</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>Made with <i class="fas fa-heart" style="color: #ff4757;"></i> for Fatima's 18th Birthday</p>
+                <p class="footer-note">This website is open source and hosted on GitHub Pages</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Control Panel -->
+    <div class="control-panel">
+        <button id="music-toggle" class="control-btn" title="Toggle Music">
+            <i class="fas fa-music"></i>
+            <span class="btn-label">Music</span>
         </button>
-        <button id="theme-toggle" class="control-btn">
-            <i class="fas fa-moon"></i> <span>Dark Mode</span>
+        <button id="theme-toggle" class="control-btn" title="Toggle Theme">
+            <i class="fas fa-moon"></i>
+            <span class="btn-label">Dark Mode</span>
+        </button>
+        <button id="scroll-top" class="control-btn" title="Scroll to Top">
+            <i class="fas fa-arrow-up"></i>
+            <span class="btn-label">Top</span>
+        </button>
+        <button id="games-quick" class="control-btn" title="Quick Games">
+            <i class="fas fa-gamepad"></i>
+            <span class="btn-label">Games</span>
         </button>
     </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Audio Element (Hidden) -->
+    <audio id="background-music" loop>
+        <!-- Music file will be loaded dynamically -->
+    </audio>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
