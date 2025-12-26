@@ -997,50 +997,91 @@ function submitQuiz() {
 }
 
 // 2. Add this JavaScript to your script.js for instant feedback
+// Enhanced Form Submission
 const messageForm = document.getElementById('message-form');
 const formFeedback = document.getElementById('form-feedback');
 
-if (messageForm) {
+if (messageForm && formFeedback) {
     messageForm.addEventListener('submit', async function(event) {
-        event.preventDefault(); // Stop the default form submission
+        event.preventDefault();
         
-        const formData = new FormData(this);
         const submitButton = this.querySelector('button[type="submit"]');
         const originalButtonText = submitButton.innerHTML;
+        const name = document.getElementById('sender-name').value.trim();
         
         // Show loading state
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         submitButton.disabled = true;
-        formFeedback.innerHTML = '';
-        formFeedback.className = '';
+        formFeedback.textContent = '';
+        formFeedback.className = 'loading';
+        formFeedback.textContent = 'Sending your message...';
+        formFeedback.classList.add('show');
         
         try {
-            // Send the form data to Formspree
+            const formData = new FormData(this);
+            
+            // Add timestamp to form data
+            formData.append('timestamp', new Date().toLocaleString());
+            
             const response = await fetch(this.action, {
                 method: 'POST',
                 body: formData,
-                headers: { 'Accept': 'application/json' }
+                headers: { 
+                    'Accept': 'application/json'
+                }
             });
             
             if (response.ok) {
                 // Success!
-                formFeedback.innerHTML = '✅ Message sent successfully! Thank you!';
-                formFeedback.className = 'success';
-                this.reset(); // Clear the form
-                // Optional: Launch confetti for celebration
-                setTimeout(() => { if (typeof launchConfetti === 'function') launchConfetti(); }, 300);
+                formFeedback.className = 'success show';
+                formFeedback.innerHTML = `
+                    <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-right: 10px;"></i>
+                    <strong>Message sent successfully, ${name}!</strong><br>
+                    <small>Thank you for your message. Ali will see it soon!</small>
+                `;
+                
+                // Clear form
+                this.reset();
+                
+                // Celebration!
+                setTimeout(() => {
+                    if (typeof launchConfetti === 'function') {
+                        launchConfetti();
+                    }
+                }, 300);
+                
+                // Play success sound if music is enabled
+                if (audioElement && isMusicPlaying) {
+                    const successSound = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ');
+                    successSound.volume = 0.3;
+                    successSound.play().catch(() => {});
+                }
+                
             } else {
                 throw new Error('Form submission failed');
             }
+            
         } catch (error) {
-            // Error
-            formFeedback.innerHTML = '❌ Oops! Something went wrong. Try again?';
-            formFeedback.className = 'error';
             console.error('Form error:', error);
+            formFeedback.className = 'error show';
+            formFeedback.innerHTML = `
+                <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; margin-right: 10px;"></i>
+                <strong>Oops! Something went wrong.</strong><br>
+                <small>Please try again or refresh the page.</small>
+            `;
         } finally {
             // Reset button
             submitButton.innerHTML = originalButtonText;
             submitButton.disabled = false;
+            
+            // Auto-hide feedback after 5 seconds
+            setTimeout(() => {
+                formFeedback.classList.remove('show');
+                setTimeout(() => {
+                    formFeedback.textContent = '';
+                    formFeedback.className = '';
+                }, 300);
+            }, 5000);
         }
     });
 }
