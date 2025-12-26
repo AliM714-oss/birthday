@@ -1073,6 +1073,34 @@ function submitQuiz() {
     document.querySelector('.quiz-body').style.display = 'none';
     document.querySelector('.quiz-footer').style.display = 'none';
     
+    // ===== ADD SHARE SCORE SECTION =====
+    const shareScoreHTML = `
+        <div class="share-score-section">
+            <div class="share-header">
+                <i class="fas fa-share-alt"></i>
+                <h3>Share Your Score with Ali!</h3>
+            </div>
+            <p class="share-description">Let Ali know how you did on his CS quiz!</p>
+            <div class="share-actions">
+                <button id="share-score-btn" class="btn-primary share-btn">
+                    <i class="fas fa-paper-plane"></i> Add Score to Message
+                </button>
+                <button id="copy-score-btn" class="game-btn secondary share-btn">
+                    <i class="far fa-copy"></i> Copy Score
+                </button>
+            </div>
+            <div id="share-feedback" class="share-feedback"></div>
+        </div>
+    `;
+    
+    // Insert the share section into results
+    document.querySelector('.results-footer').insertAdjacentHTML('beforebegin', shareScoreHTML);
+    
+    // Add event listeners
+    document.getElementById('share-score-btn').addEventListener('click', shareScoreWithAli);
+    document.getElementById('copy-score-btn').addEventListener('click', copyScoreToClipboard);
+    // ===== END SHARE SCORE SECTION =====
+    
     // Launch confetti for good scores
     if (percentage >= 70) {
         setTimeout(() => {
@@ -1085,9 +1113,140 @@ function submitQuiz() {
         audioElement.currentTime = 0;
         audioElement.play().catch(e => console.log("Audio play blocked"));
     }
-    
-    alert(`Quiz submitted! Score: ${userScore}/${quizQuestions.length} (${percentage.toFixed(1)}%)`);
 }
+
+// ===== SHARE SCORE FUNCTION =====
+function shareScoreWithAli() {
+    const finalScore = userScore;
+    const totalQuestions = quizQuestions.length;
+    const percentage = Math.round((finalScore / totalQuestions) * 100);
+    const timestamp = new Date().toLocaleString();
+    
+    // Create performance message based on score
+    let performanceMessage = "";
+    let performanceEmoji = "";
+    
+    if (percentage >= 90) {
+        performanceMessage = "I aced your CS quiz! 🏆";
+        performanceEmoji = "🏆";
+    } else if (percentage >= 80) {
+        performanceMessage = "I did really well on your CS quiz! 💻";
+        performanceEmoji = "💻";
+    } else if (percentage >= 70) {
+        performanceMessage = "I passed your CS quiz! 👍";
+        performanceEmoji = "👍";
+    } else if (percentage >= 60) {
+        performanceMessage = "I tried your CS quiz! 📚";
+        performanceEmoji = "📚";
+    } else {
+        performanceMessage = "I attempted your CS quiz! 😅";
+        performanceEmoji = "😅";
+    }
+    
+    // Build the message
+    const scoreMessage = `${performanceMessage}
+
+🎯 **Score:** ${finalScore}/${totalQuestions} (${percentage}%)
+⏰ **Completed:** ${timestamp}
+${performanceEmoji} **Difficulty:** ${percentage >= 80 ? "Challenging but fun!" : "Tricky but interesting!"}
+
+I especially liked the questions about: [What topic did you like?]
+`;
+
+    // Fill the message form
+    const messageInput = document.getElementById('sender-message');
+    const nameInput = document.getElementById('sender-name');
+    
+    if (messageInput && nameInput) {
+        // Auto-fill name (she can change it)
+        if (!nameInput.value.trim()) {
+            nameInput.value = "Fatima";
+        }
+        
+        // Auto-fill message with score
+        messageInput.value = scoreMessage;
+        
+        // Add visual highlight
+        messageInput.classList.add('auto-filled');
+        setTimeout(() => {
+            messageInput.classList.remove('auto-filled');
+        }, 3000);
+        
+        // Focus on message area so she can edit
+        messageInput.focus();
+        messageInput.setSelectionRange(0, 0); // Cursor at start
+        
+        // Navigate to the Write Back section
+        showSection('write-back');
+        
+        // Smooth scroll to the form
+        setTimeout(() => {
+            document.getElementById('message-form').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }, 300);
+        
+        // Show success feedback
+        const feedback = document.getElementById('share-feedback');
+        if (feedback) {
+            feedback.innerHTML = `
+                <div class="share-success">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Ready to send!</strong> Your score has been added to the message form.
+                </div>
+            `;
+            feedback.style.display = 'block';
+        }
+        
+        // Add confetti celebration
+        setTimeout(() => {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 60,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }, 500);
+        
+    } else {
+        // Fallback if form elements not found
+        alert("Score added to clipboard! Paste it in your message to Ali.");
+        copyScoreToClipboard();
+    }
+}
+
+// ===== COPY SCORE TO CLIPBOARD =====
+function copyScoreToClipboard() {
+    const finalScore = userScore;
+    const totalQuestions = quizQuestions.length;
+    const percentage = Math.round((finalScore / totalQuestions) * 100);
+    
+    const scoreText = `🎯 CS Quiz Score: ${finalScore}/${totalQuestions} (${percentage}%)
+Taken on: ${new Date().toLocaleDateString()}
+From: Fatima's 18th Birthday Website 🎂`;
+    
+    navigator.clipboard.writeText(scoreText)
+        .then(() => {
+            // Show feedback
+            const feedback = document.getElementById('share-feedback');
+            if (feedback) {
+                feedback.innerHTML = `
+                    <div class="share-success">
+                        <i class="fas fa-check-circle"></i>
+                        <strong>Copied!</strong> Score is ready to paste anywhere.
+                    </div>
+                `;
+                feedback.style.display = 'block';
+            }
+        })
+        .catch(() => {
+            // Fallback for older browsers
+            prompt("Copy this score:", scoreText);
+        });
+}
+
 
 // 2. Add this JavaScript to your script.js for instant feedback
 // Enhanced Form Submission
