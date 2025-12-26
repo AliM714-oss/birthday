@@ -103,6 +103,8 @@ body.dark-theme {
 .section {
     display: none;
     padding: 80px 0;
+    margin-top: -60px;  /* ADD THIS LINE */
+    padding-top: 140px; /* CHANGE THIS LINE (80 + 60 = 140) */
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 0.8s ease forwards;
