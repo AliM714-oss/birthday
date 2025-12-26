@@ -996,6 +996,55 @@ function submitQuiz() {
     alert(`Quiz submitted! Score: ${userScore}/${quizQuestions.length} (${percentage.toFixed(1)}%)`);
 }
 
+// 2. Add this JavaScript to your script.js for instant feedback
+const messageForm = document.getElementById('message-form');
+const formFeedback = document.getElementById('form-feedback');
+
+if (messageForm) {
+    messageForm.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Stop the default form submission
+        
+        const formData = new FormData(this);
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        
+        // Show loading state
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitButton.disabled = true;
+        formFeedback.innerHTML = '';
+        formFeedback.className = '';
+        
+        try {
+            // Send the form data to Formspree
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+            
+            if (response.ok) {
+                // Success!
+                formFeedback.innerHTML = '✅ Message sent successfully! Thank you!';
+                formFeedback.className = 'success';
+                this.reset(); // Clear the form
+                // Optional: Launch confetti for celebration
+                setTimeout(() => { if (typeof launchConfetti === 'function') launchConfetti(); }, 300);
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            // Error
+            formFeedback.innerHTML = '❌ Oops! Something went wrong. Try again?';
+            formFeedback.className = 'error';
+            console.error('Form error:', error);
+        } finally {
+            // Reset button
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
+        }
+    });
+}
+
 // ===== UTILITY FUNCTIONS =====
 function loadPreferences() {
     // Load theme preference
