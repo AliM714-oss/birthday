@@ -656,7 +656,7 @@ function initializeQuizDatabase() {
         },
         {
             topic: "Python Basics",
-            question: "Which method removes whitespace from both ends of a string?",
+            question: "Which method removes whitespace from both ends of a string in Python?",
             options: ["strip()", "trim()", "clean()", "remove()"],
             correct: 0,
             explanation: "strip() removes whitespace from both ends. lstrip() and rstrip() remove from left/right only."
@@ -684,28 +684,28 @@ function initializeQuizDatabase() {
         },
         {
             topic: "Python Basics",
-            question: "Which data type is mutable?",
+            question: "Which data type is mutable(modify) in Python?",
             options: ["List", "Tuple", "String", "Integer"],
             correct: 0,
             explanation: "Lists are mutable (can be changed). Tuples and strings are immutable."
         },
         {
             topic: "Python Basics",
-            question: "What does // operator do?",
+            question: "What does // operator do in Python?",
             options: ["Integer division", "Float division", "Modulus", "Exponentiation"],
             correct: 0,
             explanation: "// performs floor division (integer division). / performs float division."
         },
         {
             topic: "Python Basics",
-            question: "How do you convert to integer?",
+            question: "How do you convert to integer in Python?",
             options: ["int()", "Integer()", "toInt()", "parseInt()"],
             correct: 0,
             explanation: "int() converts strings/floats to integers. float() and str() are similar."
         },
         {
             topic: "Python Basics",
-            question: "What does range(5) generate?",
+            question: "What does range(5) generate in Python?",
             options: ["0,1,2,3,4", "1,2,3,4,5", "0,1,2,3,4,5", "5 numbers starting from 1"],
             correct: 0,
             explanation: "range(5) generates 0-4. range(1,6) would generate 1-5."
@@ -804,7 +804,7 @@ function initializeQuizDatabase() {
     const cppBasics = [
         {
             topic: "C++ Basics",
-            question: "Which operator declares a pointer?",
+            question: "Which operator declares a pointer in C++?",
             options: ["*", "&", "->", "::"],
             correct: 0,
             explanation: "* declares a pointer. & gets address. -> accesses members through pointer."
@@ -818,7 +818,7 @@ function initializeQuizDatabase() {
         },
         {
             topic: "C++ Basics",
-            question: "Which is correct main function?",
+            question: "Which is correct main function in C++?",
             options: ["int main()", "void main()", "main()", "function main()"],
             correct: 0,
             explanation: "int main() is standard. Returns 0 for success, non-zero for error."
@@ -832,35 +832,35 @@ function initializeQuizDatabase() {
         },
         {
             topic: "C++ Basics",
-            question: "How to allocate memory dynamically?",
+            question: "How to allocate memory dynamically in C++?",
             options: ["new", "malloc", "alloc", "create"],
             correct: 0,
             explanation: "new allocates memory, returns pointer. delete frees it. C++ style, not malloc."
         },
         {
             topic: "C++ Basics",
-            question: "Which is a reference?",
+            question: "Which is a reference in C++?",
             options: ["int& x", "int* x", "int x", "ref int x"],
             correct: 0,
             explanation: "& after type creates reference (alias for variable). Must be initialized."
         },
         {
             topic: "C++ Basics",
-            question: "What is :: operator?",
+            question: "What is :: operator in C++?",
             options: ["Scope resolution", "Pointer access", "Reference", "Namespace"],
             correct: 0,
             explanation: ":: accesses global scope or class members. Example: std::cout, Class::method()"
         },
         {
             topic: "C++ Basics",
-            question: "How to create a class?",
+            question: "How to create a class in C++?",
             options: ["class MyClass {}", "class MyClass:", "MyClass class {}", "class: MyClass"],
             correct: 0,
             explanation: "C++ uses braces {} and semicolon after class definition."
         },
         {
             topic: "C++ Basics",
-            question: "What is cin?",
+            question: "What is cin in C++?",
             options: ["Standard input", "Standard output", "Console input", "Character input"],
             correct: 0,
             explanation: "cin with >> operator reads input. Example: cin >> variable;"
@@ -874,7 +874,7 @@ function initializeQuizDatabase() {
         },
         {
             topic: "C++ Basics",
-            question: "What does const do?",
+            question: "What does const do in C++?",
             options: ["Makes variable immutable", "Declares constant", "Defines function", "Creates reference"],
             correct: 0,
             explanation: "const makes variable read-only. Must be initialized. Example: const int x = 5;"
