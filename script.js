@@ -31,121 +31,93 @@ let reactionGame = {
 };
 
 // ===== WELCOME SYSTEM =====
+// ===== SIMPLE WELCOME POPUP =====
 function initializeWelcomeSystem() {
-    const popup = document.getElementById('welcome-popup');
-    const closeBtn = document.querySelector('.close-popup');
-    const closeBtn2 = document.querySelector('.close-btn');
-    const confettiBtn = document.querySelector('.start-confetti');
+    console.log("🎉 Welcome system initializing...");
     
-    if (!popup) return;
-    
-    // Check if popup was shown in this session
-    const popupShown = sessionStorage.getItem('welcomePopupShown');
-    const isBirthdayDay = true; // Set this based on actual date if needed
-    
-    // Show popup after 800ms delay
+    // Wait 1 second for page to load
     setTimeout(() => {
-        if (!popupShown && isBirthdayDay) {
-            popup.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        const popup = document.getElementById('welcome-popup');
+        
+        if (!popup) {
+            console.error("Popup element not found!");
+            return;
+        }
+        
+        // Check if already shown today
+        const today = new Date().toDateString();
+        const lastShown = localStorage.getItem('popupLastShown');
+        
+        if (lastShown !== today) {
+            console.log("Showing welcome popup for the first time today");
             
-            // Auto-confetti in background (subtle)
+            // Show the popup
+            popup.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            
+            // Launch gentle confetti
             setTimeout(() => {
-                launchWelcomeConfetti();
-            }, 500);
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 80,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#6c63ff', '#ff6584', '#36d1dc']
+                    });
+                }
+            }, 300);
+            
+            // Save that we showed it today
+            localStorage.setItem('popupLastShown', today);
         } else {
-            // If popup already shown, just do auto-confetti
-            launchWelcomeConfetti();
-        }
-    }, 800);
-    
-    // Close buttons functionality
-    const closePopup = () => {
-        popup.classList.remove('active');
-        document.body.style.overflow = '';
-        sessionStorage.setItem('welcomePopupShown', 'true');
-        
-        // Auto-confetti when she starts exploring
-        setTimeout(() => {
-            launchMainConfetti();
-        }, 300);
-    };
-    
-    if (closeBtn) closeBtn.addEventListener('click', closePopup);
-    if (closeBtn2) closeBtn2.addEventListener('click', closePopup);
-    
-    // Confetti button in popup
-    if (confettiBtn) {
-        confettiBtn.addEventListener('click', () => {
-            launchMainConfetti();
-            // Extra celebration for button click
+            console.log("Popup already shown today, skipping");
+            // Still launch confetti but no popup
             setTimeout(() => {
-                launchSecondaryConfetti();
-            }, 500);
-        });
-    }
-    
-    // Close on ESC key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && popup.classList.contains('active')) {
-            closePopup();
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: { y: 0.6 }
+                    });
+                }
+            }, 800);
         }
-    });
-    
-    // Close on background click
-    popup.addEventListener('click', (e) => {
-        if (e.target === popup) {
-            closePopup();
-        }
-    });
-}
-
-// Special confetti functions for welcome
-function launchWelcomeConfetti() {
-    // Subtle confetti for background
-    confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#6c63ff', '#ff6584', '#36d1dc', '#5b86e5'],
-        scalar: 0.8
-    });
-}
-
-function launchMainConfetti() {
-    // Main celebration confetti
-    confetti({
-        particleCount: 150,
-        spread: 100,
-        origin: { y: 0.6 }
-    });
-    
-    setTimeout(() => {
-        confetti({
-            particleCount: 100,
-            angle: 60,
-            spread: 80,
-            origin: { x: 0 }
+        
+        // Setup close buttons
+        document.querySelectorAll('.close-popup, .close-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                popup.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Launch confetti when exploring
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    origin: { y: 0.5 }
+                });
+            });
         });
         
-        confetti({
-            particleCount: 100,
-            angle: 120,
-            spread: 80,
-            origin: { x: 1 }
-        });
-    }, 250);
-}
-
-function launchSecondaryConfetti() {
-    // Extra burst for button click
-    confetti({
-        particleCount: 200,
-        spread: 120,
-        origin: { y: 0.5 },
-        colors: ['#ff6584', '#ff3366', '#ff6b6b'],
-        scalar: 1.2
-    });
+        // Confetti button in popup
+        const confettiBtn = document.querySelector('.start-confetti');
+        if (confettiBtn) {
+            confettiBtn.addEventListener('click', () => {
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.5 }
+                });
+                
+                confetti({
+                    particleCount: 100,
+                    angle: 60,
+                    spread: 80,
+                    origin: { x: 0 }
+                });
+            });
+        }
+        
+    }, 1000); // 1 second delay
 }
 
 // ===== INITIALIZATION =====
@@ -159,6 +131,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeConfetti();
     initializeGames();
     initializeQuiz();
+    
+    // ADD THIS LINE:
+    initializeWelcomeSystem();  // This triggers the popup
     
     // Show home section first
     showSection('home');
