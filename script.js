@@ -180,29 +180,36 @@ function initializeNavigation() {
 }
 
 function showSection(sectionId) {
-    // Hide all sections
+    // 1. Hide all content sections
     document.querySelectorAll('.section').forEach(section => {
         section.classList.remove('active');
     });
     
-    // Show target
+    // 2. Show target content section
     const target = document.getElementById(sectionId);
     if (target) {
         target.classList.add('active');
         currentSection = sectionId;
         
-        // Smooth scroll to section
+        // 3. Update navigation buttons (CRITICAL FIX)
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('active'); // Remove from all
+            if (btn.getAttribute('href') === `#${sectionId}`) {
+                btn.classList.add('active'); // Add to current
+            }
+        });
+        
+        // 4. Smooth scroll
         setTimeout(() => {
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
         
-        // Special initialization for certain sections
+        // 5. Special section initialization
         if (sectionId === 'quiz' && !quizStarted) {
             startNewQuiz();
         }
     }
 }
-
 // ===== THEME MANAGEMENT =====
 function initializeTheme() {
     const themeToggle = document.getElementById('theme-toggle');
