@@ -120,49 +120,43 @@ function initializeWelcomeSystem() {
     }, 1000); // 1 second delay
 }
 
+// ===== RANDOMIZE ALL QUESTIONS =====
+function randomizeAllQuestions() {
+    console.log("🎲 Randomizing correct answer positions...");
+    
+    quizQuestions.forEach((question, index) => {
+        const correctAnswer = question.options[question.correct];
+        
+        // Shuffle options
+        for (let i = question.options.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [question.options[i], question.options[j]] = [question.options[j], question.options[i]];
+        }
+        
+        // Update correct index
+        question.correct = question.options.indexOf(correctAnswer);
+    });
+    
+    console.log(`✅ Randomized ${quizQuestions.length} questions!`);
+    console.log("📋 New questions array:", JSON.stringify(quizQuestions, null, 2));
+}
+
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🎂 Birthday website for Fatima loaded!");
     
-    // Initialize all components
     initializeNavigation();
     initializeTheme();
     initializeMusic();
     initializeConfetti();
     initializeGames();
     initializeQuiz();
-    // ===== RANDOMIZE ALL QUESTIONS =====
-    function randomizeAllQuestions() {
-        console.log("🎲 Randomizing correct answer positions for ALL questions...");
-        
-        quizQuestions.forEach((question, index) => {
-            // 1. Remember the correct answer text
-            const correctAnswer = question.options[question.correct]; // Gets the text at position 0
-            
-            // 2. Shuffle the options array
-            for (let i = question.options.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [question.options[i], question.options[j]] = [question.options[j], question.options[i]];
-            }
-            
-            // 3. Find where the correct answer moved to
-            question.correct = question.options.indexOf(correctAnswer);
-            
-            console.log(`Q${index + 1}: Correct moved to position ${question.correct}`);
-        });
-        
-        console.log(`✅ Randomized ${quizQuestions.length} questions!`);
-        console.log("📋 Copy the new questions array from below:");
-        console.log(JSON.stringify(quizQuestions, null, 2));
-    }
     
-    // ADD THIS LINE:
-    initializeWelcomeSystem();  // This triggers the popup
+    // ===== CALL IT HERE =====
+    randomizeAllQuestions();  // This overrides correct:0
     
-    // Show home section first
+    initializeWelcomeSystem();
     showSection('home');
-    
-    // Load saved preferences
     loadPreferences();
 });
 
