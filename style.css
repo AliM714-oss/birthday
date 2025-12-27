@@ -1302,9 +1302,15 @@ body {
         top: 0;
         left: 0;
         padding: 10px 0;
+        z-index: 1000;
     }
     
-    /* Remove desktop hide/show behavior on mobile */
+    /* Add padding to body to account for fixed navbar on mobile */
+    body {
+        padding-top: 60px;
+    }
+    
+    /* Remove sticky behavior on mobile */
     .navbar.hidden,
     .navbar.visible {
         transform: none;
