@@ -29,7 +29,73 @@ let reactionGame = {
     averageTime: null,
     attempts: 0
 };
+// ===== NAVBAR SCROLL BEHAVIOR (FIXED) =====
+let lastScrollTop = 0;
+let scrollTimeout;
+let isScrolling = false;
 
+function setupNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    
+    // Initialize with visible class
+    navbar.classList.add('visible');
+    
+    // Set up scroll event for desktop only
+    if (window.innerWidth >= 769) {
+        window.addEventListener('scroll', handleDesktopScroll);
+    }
+    
+    // Handle resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 769) {
+            window.addEventListener('scroll', handleDesktopScroll);
+        } else {
+            window.removeEventListener('scroll', handleDesktopScroll);
+            navbar.classList.remove('hidden');
+            navbar.classList.add('visible');
+        }
+    });
+}
+
+function handleDesktopScroll() {
+    if (isScrolling) return;
+    
+    const navbar = document.querySelector('.navbar');
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Clear any existing timeout
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+    }
+    
+    // Don't hide at the top of the page
+    if (currentScroll < 100) {
+        navbar.classList.remove('hidden');
+        navbar.classList.add('visible');
+        lastScrollTop = currentScroll;
+        return;
+    }
+    
+    // Hide navbar when scrolling down, show when scrolling up
+    if (currentScroll > lastScrollTop) {
+        // Scrolling down - hide navbar
+        navbar.classList.remove('visible');
+        navbar.classList.add('hidden');
+    } else {
+        // Scrolling up - show navbar
+        navbar.classList.remove('hidden');
+        navbar.classList.add('visible');
+    }
+    
+    lastScrollTop = currentScroll;
+    
+    // Set a timeout to prevent rapid firing
+    isScrolling = true;
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+    }, 150);
+}
 // ===== WELCOME SYSTEM =====
 // ===== SIMPLE WELCOME POPUP =====
 function initializeWelcomeSystem() {
@@ -191,18 +257,25 @@ function showSection(sectionId) {
         target.classList.add('active');
         currentSection = sectionId;
         
-        // 3. Update navigation buttons (CRITICAL FIX)
+        // 3. Update navigation buttons
         document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('active'); // Remove from all
+            btn.classList.remove('active');
             if (btn.getAttribute('href') === `#${sectionId}`) {
-                btn.classList.add('active'); // Add to current
+                btn.classList.add('active');
             }
         });
         
-        // 4. Smooth scroll
+        // 4. Smooth scroll with navbar offset
         setTimeout(() => {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+            const navbar = document.querySelector('.navbar');
+            const navbarHeight = navbar ? navbar.offsetHeight : 0;
+            const targetPosition = target.offsetTop - navbarHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }, 50);
         
         // 5. Special section initialization
         if (sectionId === 'quiz' && !quizStarted) {
