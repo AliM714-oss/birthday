@@ -6,8 +6,13 @@
 }
 
 /* ===== MOBILE: PREVENT HORIZONTAL SCROLL & TOUCH FIXES ===== */
-html, body, .container, .section, .nav-container {
+html, body {
     max-width: 100%;
+    overflow-x: hidden;
+}
+
+.container, .section, .nav-container {
+    max-width: 100vw;
     overflow-x: hidden;
 }
 
@@ -124,7 +129,7 @@ body {
     padding: 0 clamp(15px, 3vw, 30px);
 }
 
-/* ===== FIXED SECTION STYLES (No transform/margin hacks) ===== */
+/* ===== FIXED SECTION STYLES ===== */
 .section {
     display: none;
     padding: clamp(50px, 8vw, 80px) 0;
@@ -166,64 +171,48 @@ body {
     margin-right: auto;
 }
 
-/* ===== NAVIGATION (Fixed/Sticky) ===== */
-/* ===== NAVIGATION ===== */
+/* ===== NAVIGATION - FIXED CENTER ===== */
 .navbar {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    padding: 20px 0; /* INCREASED from 15px to 20px */
+    padding: 15px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, opacity 0.3s ease;
-    min-height: 70px; /* ADD THIS: Minimum height for navbar */
-    display: flex;
-    align-items: center;
+    width: 100%;
 }
 
-/* Ensure nav container has proper spacing */
+/* FIX: Center the navbar on laptop */
 .nav-container {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 15px; /* Increase gap for better spacing */
     flex-wrap: wrap;
-    padding: 5px 0; /* ADD THIS: Internal spacing */
-}
-
-/* Add more padding to nav buttons on desktop */
-@media (min-width: 769px) {
-    .nav-btn {
-        padding: 15px 25px; /* INCREASED from var(--space-xs) var(--space-md) */
-        font-size: 1rem; /* Larger text */
-    }
-    
-    /* More space between navbar and content */
-    .section:first-of-type {
-        margin-top: 20px;
-    }
-}
-
-.nav-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .nav-btn {
-    padding: var(--space-xs) var(--space-md);
+    padding: 12px 25px; /* Increased padding for better touch */
     background: transparent;
     border: 2px solid transparent;
-    border-radius: var(--radius-lg);
+    border-radius: 30px;
     color: var(--text-color);
     text-decoration: none;
     font-weight: 500;
-    font-size: var(--size-xs);
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 8px;
     transition: var(--transition);
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.dark-theme .nav-btn {
+    color: #f0f0f0;
 }
 
 .nav-btn:hover {
@@ -262,29 +251,65 @@ body {
     box-shadow: 0 10px 25px rgba(108, 99, 255, 0.4);
 }
 
-/* ===== HOME SECTION ===== */
+/* ===== HOME SECTION - FIXED IMAGE SIZE ===== */
 .hero-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
-    gap: clamp(40px, 6vw, 60px);
+    grid-template-columns: 1fr 1fr; /* Equal columns */
+    gap: 60px;
     align-items: center;
     margin-bottom: 60px;
+    min-height: 500px; /* Minimum height for balance */
 }
 
-.hero-content { animation: fadeInLeft 1s ease; }
-.hero-image { animation: fadeInRight 1s ease; }
+.hero-content { 
+    animation: fadeInLeft 1s ease; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.hero-image { 
+    animation: fadeInRight 1s ease; 
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
 
 .hero-title {
-    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-size: clamp(2rem, 5vw, 3rem);
     margin-bottom: 20px;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    line-height: 1.2;
 }
 
 .hero-subtitle {
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
     color: #666;
     margin-bottom: 20px;
 }
@@ -298,8 +323,8 @@ body {
 
 .hero-features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 22vw, 240px), 1fr));
-    gap: clamp(15px, 2vw, 25px);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
     margin: 30px 0;
 }
 
@@ -325,11 +350,13 @@ body {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow);
+    width: 100%;
+    height: 400px; /* Fixed height for image */
 }
 
 .main-photo {
     width: 100%;
-    height: clamp(280px, 45vh, 420px);
+    height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.5s ease;
@@ -352,8 +379,8 @@ body {
 /* ===== GALLERY SECTION ===== */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 35vw, 350px), 1fr));
-    gap: clamp(20px, 3vw, 40px);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
     margin: 40px 0;
 }
 
@@ -397,15 +424,15 @@ body {
 /* ===== GAMES SECTION ===== */
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(320px, 45vw, 500px), 1fr));
-    gap: clamp(20px, 3vw, 40px);
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
     margin-top: 40px;
 }
 
 .game-card {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
-    padding: clamp(25px, 4vw, 40px);
+    padding: 25px;
     box-shadow: var(--shadow);
     transition: var(--transition);
 }
@@ -496,7 +523,7 @@ body {
 .click-container { margin: 20px 0; }
 
 .click-area {
-    height: clamp(180px, 30vh, 250px);
+    height: 200px;
     background: linear-gradient(135deg, #36d1dc, #5b86e5);
     border-radius: var(--radius-lg);
     display: flex;
@@ -510,7 +537,7 @@ body {
 }
 
 .click-counter h2 {
-    font-size: clamp(3rem, 8vw, 5rem);
+    font-size: 4rem;
     color: white;
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -528,24 +555,24 @@ body {
 }
 
 .timer-circle {
-    width: clamp(55px, 10vw, 75px);
-    height: clamp(55px, 10vw, 75px);
+    width: 60px;
+    height: 60px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(1.3rem, 2.8vw, 1.9rem);
+    font-size: 1.5rem;
     font-weight: bold;
     color: white;
-    border: clamp(2px, 0.3vw, 4px) solid white;
+    border: 3px solid white;
 }
 
 /* Reaction Game */
 .reaction-container { margin: 20px 0; }
 
 .reaction-area {
-    height: clamp(140px, 25vh, 200px);
+    height: 150px;
     background: linear-gradient(135deg, #4a4a8a, #2d2d44);
     border-radius: var(--radius-lg);
     display: flex;
@@ -573,7 +600,7 @@ body {
 }
 
 .reaction-timer {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-size: 2rem;
     font-weight: bold;
     margin-top: 10px;
 }
@@ -597,7 +624,7 @@ body {
 .quiz-container {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
-    padding: clamp(25px, 4vw, 40px);
+    padding: 30px;
     box-shadow: var(--shadow);
     margin-top: 30px;
 }
@@ -644,7 +671,7 @@ body {
 }
 
 #question-text {
-    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+    font-size: 1.4rem;
     margin: 30px 0;
     line-height: 1.6;
     color: var(--text-color);
@@ -652,18 +679,18 @@ body {
 
 .options-grid {
     display: grid;
-    gap: clamp(10px, 1.5vw, 15px);
+    gap: 12px;
     margin: 25px 0;
 }
 
 .quiz-option {
-    padding: clamp(16px, 2vw, 18px) clamp(20px, 2.5vw, 25px);
+    padding: 18px 25px;
     background: rgba(108, 99, 255, 0.1);
     border: 2px solid transparent;
     border-radius: 12px;
     cursor: pointer;
     text-align: left;
-    font-size: clamp(1rem, 1.8vw, 1.1rem);
+    font-size: 1.1rem;
     transition: var(--transition);
     min-height: clamp(44px, 6vh, 60px);
 }
@@ -700,6 +727,17 @@ body {
     animation: slideIn 0.3s ease;
 }
 
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 .explanation-box h4 {
     color: var(--accent-color);
     margin-bottom: 15px;
@@ -717,7 +755,7 @@ body {
 .results-container {
     background: var(--light-bg);
     border-radius: var(--radius-lg);
-    padding: clamp(25px, 4vw, 40px);
+    padding: 40px;
     margin-top: 30px;
     text-align: center;
 }
@@ -800,7 +838,7 @@ body {
 .message-icon i { font-size: 2rem; }
 
 .message-title h3 {
-    font-size: clamp(1.6rem, 4vw, 2rem);
+    font-size: 2rem;
     margin-bottom: 10px;
 }
 
@@ -809,10 +847,10 @@ body {
     font-size: 1.1rem;
 }
 
-.message-body { padding: clamp(25px, 4vw, 40px); }
+.message-body { padding: 40px; }
 
 .message-content {
-    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    font-size: 1.15rem;
     line-height: 1.8;
     color: var(--text-color);
 }
@@ -843,7 +881,7 @@ body {
     border-radius: 0 10px 10px 0;
     margin: 30px 0;
     font-style: italic;
-    font-size: clamp(1.1rem, 2vw, 1.2rem);
+    font-size: 1.2rem;
 }
 
 .message-footer {
@@ -880,7 +918,7 @@ body {
 
 #message-form {
     background: var(--card-bg);
-    padding: clamp(25px, 4vw, 40px);
+    padding: 40px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow);
     margin-top: 30px;
@@ -899,11 +937,11 @@ body {
 .form-group input,
 .form-group textarea {
     width: 100%;
-    padding: clamp(14px, 2vw, 16px) clamp(16px, 2.5vw, 20px);
+    padding: 16px 20px;
     border: 2px solid #ddd;
     border-radius: var(--radius-md);
     font-family: 'Poppins', sans-serif;
-    font-size: clamp(1rem, 1.8vw, 1.1rem);
+    font-size: 1rem;
     transition: var(--transition);
     background: rgba(255, 255, 255, 0.9);
     color: #333;
@@ -925,7 +963,7 @@ body {
 
 #message-form .btn-primary {
     width: 100%;
-    padding: clamp(16px, 2vw, 18px);
+    padding: 18px;
     font-size: 1.2rem;
     border-radius: 10px;
     margin-top: 10px;
@@ -976,7 +1014,7 @@ body {
 
 .footer-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 40px;
     margin-bottom: 40px;
 }
@@ -1077,7 +1115,7 @@ body {
 
 .popup-content {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    padding: clamp(30px, 6vw, 50px) clamp(25px, 4vw, 40px);
+    padding: 50px 40px;
     border-radius: 25px;
     max-width: 550px;
     width: 90%;
@@ -1092,6 +1130,11 @@ body {
 #welcome-popup.active .popup-content {
     transform: scale(1);
     animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.02); }
 }
 
 .close-popup {
@@ -1119,13 +1162,18 @@ body {
 }
 
 .popup-icon {
-    font-size: clamp(3rem, 8vw, 5rem);
+    font-size: 4rem;
     margin-bottom: 20px;
     animation: bounce 2s infinite;
 }
 
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
 .popup-content h2 {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-size: 2.5rem;
     margin-bottom: 15px;
     background: linear-gradient(135deg, #6c63ff, #ff6584);
     -webkit-background-clip: text;
@@ -1134,7 +1182,7 @@ body {
 }
 
 .popup-text {
-    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-size: 1.2rem;
     margin-bottom: 10px;
     color: #555;
 }
@@ -1248,53 +1296,14 @@ body {
     gap: 10px;
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes fadeInRight {
-    from {
-        opacity: 0;
-        transform: translateX(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.8; }
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-15px) scale(1.02); }
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes pulse-glow {
@@ -1302,111 +1311,128 @@ body {
     50% { box-shadow: 0 0 20px 5px rgba(108, 99, 255, 0.3); }
 }
 
+#sender-message.auto-filled {
+    border-color: var(--primary-color);
+    background: rgba(108, 99, 255, 0.03);
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
-/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 992px) {
+    /* Tablet styles */
+    .hero-section {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    
+    .hero-content, .hero-image {
+        width: 100%;
+    }
+    
+    .image-frame {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+
 @media (max-width: 768px) {
-    /* Mobile: Fixed navbar */
+    /* MOBILE FIXES */
+    
+    /* Navbar fixes for mobile */
     .navbar {
         position: fixed;
         width: 100%;
         top: 0;
         left: 0;
-        padding: 12px 0; /* Adjusted padding */
-        height: 65px; /* Fixed height */
-        display: flex;
-        align-items: center;
+        padding: 10px 0;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         z-index: 1000;
     }
     
-    /* Remove desktop hide/show behavior on mobile */
-    .navbar.hidden,
-    .navbar.visible {
-        transform: none;
-        opacity: 1;
+    .dark-theme .navbar {
+        background: rgba(26, 26, 46, 0.98);
     }
     
-    /* Fix body padding for fixed navbar */
-    body {
-        padding-top: 65px; /* Match navbar height */
-        overflow-x: hidden;
-    }
-    
-    /* Mobile navbar styling */
+    /* Fix navbar container to prevent overflow */
     .nav-container {
-        justify-content: space-around;
+        justify-content: space-between; /* Changed from space-around */
         padding: 0 5px;
+        gap: 2px; /* Reduced gap */
         width: 100%;
+        overflow: hidden;
     }
     
+    /* Fix nav buttons for mobile - all buttons fit properly */
     .nav-btn {
-        flex: 1;
+        flex: 1; /* All buttons equal width */
+        min-width: 0; /* Allow shrinking */
+        padding: 8px 2px; /* Reduced padding */
+        font-size: 0.7rem;
+        border-radius: 20px;
         justify-content: center;
-        padding: 8px 3px;
-        font-size: 0.8rem;
-        min-height: 44px; /* Touch-friendly */
     }
     
+    /* Hide text, show only icons on mobile */
     .nav-text {
         display: none;
     }
     
     .nav-btn i {
-        font-size: 1.2rem;
+        font-size: 1rem;
         margin: 0;
     }
     
-    /* Control Panel */
-    .control-panel {
-        bottom: 20px;
-        right: 20px;
-        flex-direction: row;
-        gap: 10px;
+    /* Body padding for fixed navbar */
+    body {
+        padding-top: 60px;
     }
     
-    .control-btn {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .btn-label { display: none; }
-    
-    /* Section adjustments for mobile */
+    /* Fix section spacing for mobile */
     .section {
-        padding: clamp(40px, 6vw, 60px) 0;
-        scroll-margin-top: 65px; /* Prevent anchor hiding */
+        padding: 40px 0;
+        scroll-margin-top: 60px;
     }
     
-    /* Special fix for home section header */
-    #home .hero-content {
-        margin-top: 30px;
-        padding-top: 20px;
-    }
-    
-    #home .hero-title {
-        margin-top: 20px;
-        font-size: 2rem;
-        padding: 0 10px;
-    }
-    
-    #home .hero-subtitle {
-        margin-top: 10px;
-        font-size: 1.1rem;
-    }
-    
+    /* Home section specific fixes for mobile */
     #home .hero-section {
         gap: 30px;
         margin-top: 10px;
     }
     
+    #home .hero-title {
+        font-size: 1.8rem;
+        margin-top: 20px;
+        line-height: 1.3;
+    }
+    
+    #home .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    #home .hero-features {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    #home .feature {
+        justify-content: center;
+        padding: 10px 15px;
+    }
+    
+    /* Fix image on mobile */
+    .image-frame {
+        height: 300px;
+        max-width: 100%;
+    }
+    
     /* Layout Adjustments */
-    .hero-features,
-    .games-grid,
-    .hero-section {
+    .games-grid {
         grid-template-columns: 1fr;
     }
     
     .gallery-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: 1fr;
     }
     
     /* Component Adjustments */
@@ -1442,50 +1468,77 @@ body {
     .results-body {
         grid-template-columns: 1fr;
     }
+    
+    /* Control Panel */
+    .control-panel {
+        bottom: 15px;
+        right: 15px;
+        flex-direction: row;
+        gap: 8px;
+    }
+    
+    .control-btn {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .btn-label { display: none; }
 }
 
 @media (max-width: 480px) {
-    /* Typography */
-    .hero-title { font-size: 1.9rem; }
-    .section-title { font-size: 1.8rem; }
-    
-    /* Layout */
-    .gallery-grid { grid-template-columns: 1fr; }
-    
-    /* Forms */
-    #message-form { padding: 25px 20px; }
-    .form-group input,
-    .form-group textarea { padding: 14px; }
-    
-    /* Games */
-    .quiz-container { padding: 20px; }
-    
-    .options-grid { gap: 8px; }
-    .quiz-option { padding: 16px 12px; font-size: 1rem; }
-    
-    .feature { justify-content: flex-start; padding: 10px 15px; }
-    
-    /* Images */
-    .main-photo {
-        height: 300px;
-        object-fit: cover;
+    /* Very small screens */
+    .container {
+        padding: 0 15px;
     }
     
-    .image-frame {
-        margin: 0 auto;
-        max-width: 90%;
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .quiz-container {
+        padding: 20px;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        padding: 14px;
+    }
+    
+    #message-form {
+        padding: 25px 20px;
     }
 }
 
 /* ===== TOUCH-FRIENDLY SIZES (Under 400px) ===== */
 @media (max-width: 400px) {
-    .nav-btn, .game-btn, .quiz-option, .btn-primary {
-        min-height: 44px;
-        padding: 12px 15px;
+    /* Navbar adjustments for very small screens */
+    .nav-btn {
+        padding: 6px 1px;
+        font-size: 0.6rem;
+        border-radius: 15px;
     }
     
-    .click-area { height: 160px; }
-    .click-counter h2 { font-size: 3rem; }
+    .nav-btn i {
+        font-size: 0.9rem;
+    }
+    
+    /* Ensure all buttons fit in one line */
+    .nav-container {
+        gap: 1px;
+    }
+    
+    /* Game adjustments */
+    .click-area {
+        height: 150px;
+    }
+    
+    .click-counter h2 {
+        font-size: 3rem;
+    }
     
     .timer-circle {
         width: 50px;
@@ -1493,19 +1546,15 @@ body {
         font-size: 1.2rem;
     }
     
-    input, textarea, select {
-        font-size: 16px !important;
+    .reaction-area {
+        height: 120px;
     }
     
-    .games-grid { gap: 15px; }
-    .game-card { padding: 20px 15px; }
-    .game-stats { flex-direction: column; gap: 8px; }
+    .games-grid {
+        gap: 15px;
+    }
     
-    .reaction-area { height: 120px; }
-    .reaction-results { grid-template-columns: 1fr; gap: 10px; }
-    
-    .hero-title {
-        font-size: 1.9rem;
-        line-height: 1.3;
+    .game-card {
+        padding: 20px 15px;
     }
 }
