@@ -32,33 +32,53 @@ let reactionGame = {
 
 
 // Fix for section scrolling on mobile
-function fixMobileScrolling() {
+// Fix for mobile navbar and scrolling
+function fixMobileNavbar() {
     const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
+    const navContainer = document.querySelector('.nav-container');
     
-    const isMobile = window.innerWidth <= 768;
-    const navbarHeight = navbar.offsetHeight;
-    
-    // Update all sections with proper scroll margin
-    document.querySelectorAll('.section').forEach(section => {
-        if (isMobile) {
-            section.style.scrollMarginTop = `${navbarHeight + 10}px`;
-        } else {
-            section.style.scrollMarginTop = '0';
+    if (window.innerWidth <= 768) {
+        // Mobile: Make sure all nav buttons fit
+        if (navbar && navContainer) {
+            // Calculate if buttons are overflowing
+            const buttons = document.querySelectorAll('.nav-btn');
+            let totalWidth = 0;
+            
+            buttons.forEach(btn => {
+                totalWidth += btn.offsetWidth;
+            });
+            
+            // If overflowing, reduce gap
+            if (totalWidth > window.innerWidth) {
+                navContainer.style.gap = '1px';
+                buttons.forEach(btn => {
+                    btn.style.padding = '6px 1px';
+                    btn.style.fontSize = '0.6rem';
+                });
+            }
         }
-    });
-    
-    // Special fix for home section on mobile
-    const homeSection = document.getElementById('home');
-    if (homeSection && isMobile) {
-        homeSection.style.paddingTop = '30px';
-        homeSection.style.minHeight = 'calc(100vh - 65px)';
+        
+        // Update body padding
+        document.body.style.paddingTop = '60px';
+    } else {
+        // Desktop: Reset styles
+        if (navContainer) {
+            navContainer.style.gap = '';
+        }
+        
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach(btn => {
+            btn.style.padding = '';
+            btn.style.fontSize = '';
+        });
+        
+        document.body.style.paddingTop = '';
     }
 }
 
 // Run on load and resize
-window.addEventListener('load', fixMobileScrolling);
-window.addEventListener('resize', fixMobileScrolling);
+window.addEventListener('load', fixMobileNavbar);
+window.addEventListener('resize', fixMobileNavbar);
 
 
 // ===== NAVBAR SCROLL BEHAVIOR (FIXED) =====
