@@ -124,16 +124,26 @@ body {
     padding: 0 clamp(15px, 3vw, 30px);
 }
 
-/* ===== TYPOGRAPHY & SECTION STYLES ===== */
+/* ===== FIXED SECTION STYLES (No transform/margin hacks) ===== */
 .section {
     display: none;
     padding: clamp(50px, 8vw, 80px) 0;
     opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease forwards;
 }
 
-.section.active { display: block; }
+.section.active {
+    display: block;
+    animation: sectionFade 0.5s ease forwards;
+}
+
+@keyframes sectionFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
 .section-title {
     font-size: clamp(1.6rem, 4vw, 2.5rem);
@@ -156,7 +166,7 @@ body {
     margin-right: auto;
 }
 
-/* ===== NAVIGATION ===== */
+/* ===== NAVIGATION (Fixed/Sticky) ===== */
 .navbar {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -165,6 +175,24 @@ body {
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.dark-theme .navbar {
+    background: rgba(26, 26, 46, 0.95);
+}
+
+/* Desktop: Hide on scroll down, show on scroll up */
+@media (min-width: 769px) {
+    .navbar.hidden {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    
+    .navbar.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .nav-container {
@@ -1212,13 +1240,6 @@ body {
 }
 
 /* ===== ANIMATIONS ===== */
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @keyframes fadeInLeft {
     from {
         opacity: 0;
@@ -1274,8 +1295,23 @@ body {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-    /* Mobile Navigation */
+    /* Mobile: Fixed navbar */
+    .navbar {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        padding: 10px 0;
+    }
     
+    /* Remove desktop hide/show behavior on mobile */
+    .navbar.hidden,
+    .navbar.visible {
+        transform: none;
+        opacity: 1;
+    }
+    
+    /* Mobile navbar styling */
     .nav-container {
         justify-content: space-around;
         padding: 0 10px;
@@ -1288,10 +1324,14 @@ body {
         font-size: 0.8rem;
     }
     
-    /* Fix for fixed navbar */
+    .nav-text {
+        display: none;
+    }
     
-    .nav-text { display: none; }
-    .nav-btn i { font-size: 1.2rem; margin: 0; }
+    .nav-btn i {
+        font-size: 1.2rem;
+        margin: 0;
+    }
     
     /* Control Panel */
     .control-panel {
