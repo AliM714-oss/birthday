@@ -265,17 +265,22 @@ function showSection(sectionId) {
             }
         });
         
-        // 4. Smooth scroll with navbar offset
+        // 4. Smooth scroll with proper offset for mobile
         setTimeout(() => {
             const navbar = document.querySelector('.navbar');
+            const isMobile = window.innerWidth <= 768;
             const navbarHeight = navbar ? navbar.offsetHeight : 0;
-            const targetPosition = target.offsetTop - navbarHeight;
+            
+            // Mobile: account for fixed navbar + extra spacing
+            // Desktop: normal offset
+            const offset = isMobile ? navbarHeight + 20 : navbarHeight;
+            const targetPosition = target.offsetTop - offset;
             
             window.scrollTo({
-                top: targetPosition,
+                top: Math.max(0, targetPosition),
                 behavior: 'smooth'
             });
-        }, 50);
+        }, 100);
         
         // 5. Special section initialization
         if (sectionId === 'quiz' && !quizStarted) {
