@@ -167,31 +167,40 @@ body {
 }
 
 /* ===== NAVIGATION (Fixed/Sticky) ===== */
+/* ===== NAVIGATION ===== */
 .navbar {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    padding: 15px 0;
+    padding: 20px 0; /* INCREASED from 15px to 20px */
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, opacity 0.3s ease;
+    min-height: 70px; /* ADD THIS: Minimum height for navbar */
+    display: flex;
+    align-items: center;
 }
 
-.dark-theme .navbar {
-    background: rgba(26, 26, 46, 0.95);
+/* Ensure nav container has proper spacing */
+.nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 5px 0; /* ADD THIS: Internal spacing */
 }
 
-/* Desktop: Hide on scroll down, show on scroll up */
+/* Add more padding to nav buttons on desktop */
 @media (min-width: 769px) {
-    .navbar.hidden {
-        transform: translateY(-100%);
-        opacity: 0;
+    .nav-btn {
+        padding: 15px 25px; /* INCREASED from var(--space-xs) var(--space-md) */
+        font-size: 1rem; /* Larger text */
     }
     
-    .navbar.visible {
-        transform: translateY(0);
-        opacity: 1;
+    /* More space between navbar and content */
+    .section:first-of-type {
+        margin-top: 20px;
     }
 }
 
@@ -1302,13 +1311,11 @@ body {
         width: 100%;
         top: 0;
         left: 0;
-        padding: 10px 0;
+        padding: 12px 0; /* Adjusted padding */
+        height: 65px; /* Fixed height */
+        display: flex;
+        align-items: center;
         z-index: 1000;
-    }
-    
-    /* FIX: Add proper body padding for fixed navbar */
-    body {
-        padding-top: 70px; /* Adjust based on your navbar height */
     }
     
     /* Remove desktop hide/show behavior on mobile */
@@ -1318,17 +1325,25 @@ body {
         opacity: 1;
     }
     
+    /* Fix body padding for fixed navbar */
+    body {
+        padding-top: 65px; /* Match navbar height */
+        overflow-x: hidden;
+    }
+    
     /* Mobile navbar styling */
     .nav-container {
         justify-content: space-around;
-        padding: 0 10px;
+        padding: 0 5px;
+        width: 100%;
     }
     
     .nav-btn {
         flex: 1;
         justify-content: center;
-        padding: 10px 5px;
+        padding: 8px 3px;
         font-size: 0.8rem;
+        min-height: 44px; /* Touch-friendly */
     }
     
     .nav-text {
@@ -1355,16 +1370,32 @@ body {
     
     .btn-label { display: none; }
     
-    /* FIX: Adjust section padding for mobile */
+    /* Section adjustments for mobile */
     .section {
         padding: clamp(40px, 6vw, 60px) 0;
-        /* Ensure sections don't hide behind navbar */
-        scroll-margin-top: 70px; /* Same as body padding-top */
+        scroll-margin-top: 65px; /* Prevent anchor hiding */
     }
     
-    /* FIX: First section needs extra top padding */
-    #home.section.active {
-        padding-top: 30px;
+    /* Special fix for home section header */
+    #home .hero-content {
+        margin-top: 30px;
+        padding-top: 20px;
+    }
+    
+    #home .hero-title {
+        margin-top: 20px;
+        font-size: 2rem;
+        padding: 0 10px;
+    }
+    
+    #home .hero-subtitle {
+        margin-top: 10px;
+        font-size: 1.1rem;
+    }
+    
+    #home .hero-section {
+        gap: 30px;
+        margin-top: 10px;
     }
     
     /* Layout Adjustments */
@@ -1410,17 +1441,6 @@ body {
     
     .results-body {
         grid-template-columns: 1fr;
-    }
-    
-    /* FIX: Typography adjustments for mobile */
-    .section-title {
-        font-size: 1.8rem;
-        margin-top: 20px;
-    }
-    
-    .hero-title {
-        font-size: 2rem;
-        margin-top: 10px;
     }
 }
 
