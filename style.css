@@ -1275,13 +1275,6 @@ body {
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     /* Mobile Navigation */
-    .navbar {
-        padding: 10px 0;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-    }
     
     .nav-container {
         justify-content: space-around;
@@ -1296,9 +1289,6 @@ body {
     }
     
     /* Fix for fixed navbar */
-    body {
-        padding-top: 60px;
-    }
     
     .nav-text { display: none; }
     .nav-btn i { font-size: 1.2rem; margin: 0; }
