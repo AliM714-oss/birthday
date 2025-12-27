@@ -29,6 +29,38 @@ let reactionGame = {
     averageTime: null,
     attempts: 0
 };
+
+
+// Fix for section scrolling on mobile
+function fixMobileScrolling() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    
+    const isMobile = window.innerWidth <= 768;
+    const navbarHeight = navbar.offsetHeight;
+    
+    // Update all sections with proper scroll margin
+    document.querySelectorAll('.section').forEach(section => {
+        if (isMobile) {
+            section.style.scrollMarginTop = `${navbarHeight + 10}px`;
+        } else {
+            section.style.scrollMarginTop = '0';
+        }
+    });
+    
+    // Special fix for home section on mobile
+    const homeSection = document.getElementById('home');
+    if (homeSection && isMobile) {
+        homeSection.style.paddingTop = '30px';
+        homeSection.style.minHeight = 'calc(100vh - 65px)';
+    }
+}
+
+// Run on load and resize
+window.addEventListener('load', fixMobileScrolling);
+window.addEventListener('resize', fixMobileScrolling);
+
+
 // ===== NAVBAR SCROLL BEHAVIOR (FIXED) =====
 let lastScrollTop = 0;
 let scrollTimeout;
