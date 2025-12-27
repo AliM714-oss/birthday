@@ -1294,6 +1294,7 @@ body {
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     /* Mobile: Fixed navbar */
     .navbar {
@@ -1305,12 +1306,12 @@ body {
         z-index: 1000;
     }
     
-    /* Add padding to body to account for fixed navbar on mobile */
+    /* FIX: Add proper body padding for fixed navbar */
     body {
-        padding-top: 60px;
+        padding-top: 70px; /* Adjust based on your navbar height */
     }
     
-    /* Remove sticky behavior on mobile */
+    /* Remove desktop hide/show behavior on mobile */
     .navbar.hidden,
     .navbar.visible {
         transform: none;
@@ -1354,9 +1355,19 @@ body {
     
     .btn-label { display: none; }
     
-    /* Layout Adjustments */
-    .section { padding: clamp(40px, 6vw, 60px) 0; }
+    /* FIX: Adjust section padding for mobile */
+    .section {
+        padding: clamp(40px, 6vw, 60px) 0;
+        /* Ensure sections don't hide behind navbar */
+        scroll-margin-top: 70px; /* Same as body padding-top */
+    }
     
+    /* FIX: First section needs extra top padding */
+    #home.section.active {
+        padding-top: 30px;
+    }
+    
+    /* Layout Adjustments */
     .hero-features,
     .games-grid,
     .hero-section {
@@ -1399,6 +1410,17 @@ body {
     
     .results-body {
         grid-template-columns: 1fr;
+    }
+    
+    /* FIX: Typography adjustments for mobile */
+    .section-title {
+        font-size: 1.8rem;
+        margin-top: 20px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+        margin-top: 10px;
     }
 }
 
