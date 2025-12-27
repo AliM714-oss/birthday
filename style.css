@@ -161,45 +161,29 @@ body {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     padding: 15px 0;
-    position: sticky;
+    position: sticky; /* Keep sticky for all devices */
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    /* Add transition for smooth hide/show on desktop */
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.nav-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+.dark-theme .navbar {
+    background: rgba(26, 26, 46, 0.95);
 }
 
-.nav-btn {
-    padding: var(--space-xs) var(--space-md);
-    background: transparent;
-    border: 2px solid transparent;
-    border-radius: var(--radius-lg);
-    color: var(--text-color);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: var(--size-xs);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: var(--transition);
-}
-
-.nav-btn:hover {
-    background: rgba(108, 99, 255, 0.1);
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-}
-
-.nav-btn.active {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+/* Desktop: Hide on scroll down, show on scroll up */
+@media (min-width: 769px) {
+    .navbar.hidden {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    
+    .navbar.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* ===== BUTTONS ===== */
@@ -1274,15 +1258,28 @@ body {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-    /* Mobile Navigation */
+    /* Mobile: Fixed navbar */
     .navbar {
-        padding: 10px 0;
-        position: fixed;
+        position: fixed; /* Fixed on mobile */
         width: 100%;
         top: 0;
-        z-index: 1000;
+        left: 0;
+        padding: 10px 0;
     }
     
+    /* Add padding to body to account for fixed navbar on mobile */
+    body {
+        padding-top: 60px;
+    }
+    
+    /* Remove sticky behavior on mobile */
+    .navbar.hidden,
+    .navbar.visible {
+        transform: none;
+        opacity: 1;
+    }
+    
+    /* Rest of your mobile navbar styles... */
     .nav-container {
         justify-content: space-around;
         padding: 0 10px;
@@ -1294,6 +1291,16 @@ body {
         padding: 10px 5px;
         font-size: 0.8rem;
     }
+    
+    .nav-text {
+        display: none;
+    }
+    
+    .nav-btn i {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+}
     
     /* Fix for fixed navbar */
     body {
