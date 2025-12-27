@@ -59,6 +59,8 @@ input, textarea {
     
     /* Transitions */
     --transition: all 0.3s ease;
+
+    --nav-height: 70px;
 }
 
 /* ===== DARK THEME OVERRIDES ===== */
@@ -165,6 +167,7 @@ body {
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    height: var(--nav-height);
 }
 
 .nav-container {
@@ -1277,7 +1280,7 @@ body {
     /* Mobile Navigation */
     .navbar {
         padding: 10px 0;
-        position: fixed;
+        position: sticky;
         width: 100%;
         top: 0;
         z-index: 1000;
@@ -1295,10 +1298,7 @@ body {
         font-size: 0.8rem;
     }
     
-    /* Fix for fixed navbar */
-    body {
-        padding-top: 60px;
-    }
+   
     
     .nav-text { display: none; }
     .nav-btn i { font-size: 1.2rem; margin: 0; }
@@ -1319,7 +1319,7 @@ body {
     .btn-label { display: none; }
     
     /* Layout Adjustments */
-    .section { padding: clamp(40px, 6vw, 60px) 0; }
+    padding-top: calc(var(--nav-height) + 40px); }
     
     .hero-features,
     .games-grid,
