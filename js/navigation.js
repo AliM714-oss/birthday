@@ -13,9 +13,9 @@ const Navigation = {
         window.addEventListener('resize', Utils.debounce(() => this.fixMobileNavbar(), 250));
     },
     
-    // Setup navigation buttons
+    // Setup navigation buttons - SIMPLIFIED WORKING VERSION
     setupNavButtons() {
-        const navButtons = Utils.$$('.nav-btn');
+        const navButtons = document.querySelectorAll('.nav-btn');
         
         navButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -32,42 +32,81 @@ const Navigation = {
         });
     },
     
-    // Show section with smooth scrolling
-    // In the showSection function, update the quiz section handling:
-function showSection(sectionId) {
-    // ... existing code ...
-    
-    // 5. Special section initialization
-    if (sectionId === 'quiz') {
-        // Wait a tiny bit to ensure DOM is ready
-        setTimeout(() => {
-            // If quiz hasn't started but questions are loaded, start it
-            if (!Quiz.state.started && Quiz.state.questions.length > 0) {
-                Quiz.startNewQuiz();
+    // Show section with smooth scrolling - FIXED VERSION
+    showSection(sectionId) {
+        console.log(`Switching to section: ${sectionId}`); // Debug log
+        
+        // 1. Hide all content sections
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        // 2. Show target content section
+        const target = document.getElementById(sectionId);
+        if (target) {
+            target.classList.add('active');
+            Utils.state.currentSection = sectionId;
+            
+            // 3. Update navigation buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('href') === `#${sectionId}`) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 4. Smooth scroll with proper offset for mobile
+            setTimeout(() => {
+                const navbar = document.querySelector('.navbar');
+                const isMobile = window.innerWidth <= 768;
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                
+                // Mobile: account for fixed navbar + extra spacing
+                // Desktop: normal offset
+                const offset = isMobile ? navbarHeight + 20 : navbarHeight;
+                const targetPosition = target.offsetTop - offset;
+                
+                window.scrollTo({
+                    top: Math.max(0, targetPosition),
+                    behavior: 'smooth'
+                });
+            }, 100);
+            
+            // 5. Special section initialization
+            if (sectionId === 'quiz') {
+                console.log('Quiz section detected');
+                
+                // If quiz hasn't started but questions are loaded, start it
+                setTimeout(() => {
+                    if (window.Quiz && Quiz.state && !Quiz.state.started && Quiz.state.questions.length > 0) {
+                        console.log('Starting new quiz...');
+                        Quiz.startNewQuiz();
+                    }
+                    // If questions aren't loaded yet, let Quiz.init handle it
+                }, 200);
             }
-            // If questions aren't loaded yet, displayQuestion will handle it
-            else if (Quiz.state.questions.length === 0) {
-                // Show loading message
-                Utils.$('#question-text').textContent = "Loading questions...";
-                // The questions will load automatically via Quiz.init()
-            }
-        }, 100);
-    }
-}
+            
+            // 6. Announce section change to screen readers
+            const sectionTitle = target.querySelector('h2, h1')?.textContent || sectionId;
+            Utils.announceToScreenReader(`Now viewing: ${sectionTitle}`);
+        } else {
+            console.error(`Section #${sectionId} not found!`);
+        }
+    },
     
     // Fix mobile navbar layout
     fixMobileNavbar() {
-        const navbar = Utils.$('.navbar');
-        const navContainer = Utils.$('.nav-container');
+        const navbar = document.querySelector('.navbar');
+        const navContainer = document.querySelector('.nav-container');
         
         if (!navbar || !navContainer) return;
         
-        if (Utils.isMobile()) {
+        if (window.innerWidth <= 768) {
             // Mobile-specific adjustments
             document.body.style.paddingTop = '60px';
             
             // Ensure all buttons fit
-            const buttons = Utils.$$('.nav-btn');
+            const buttons = document.querySelectorAll('.nav-btn');
             let totalWidth = 0;
             
             buttons.forEach(btn => {
@@ -86,7 +125,7 @@ function showSection(sectionId) {
             document.body.style.paddingTop = '';
             navContainer.style.gap = '';
             
-            Utils.$$('.nav-btn').forEach(btn => {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.style.padding = '';
                 btn.style.fontSize = '';
             });
@@ -95,7 +134,7 @@ function showSection(sectionId) {
     
     // Setup navbar scroll behavior
     setupNavbarScroll() {
-        const navbar = Utils.$('.navbar');
+        const navbar = document.querySelector('.navbar');
         if (!navbar) return;
         
         let lastScrollTop = 0;
@@ -138,7 +177,7 @@ function showSection(sectionId) {
     
     // Setup theme toggle
     setupThemeToggle() {
-        const themeToggle = Utils.$('#theme-toggle');
+        const themeToggle = document.querySelector('#theme-toggle');
         if (!themeToggle) return;
         
         // Apply saved theme
@@ -168,7 +207,7 @@ function showSection(sectionId) {
     
     // Setup music toggle
     setupMusicToggle() {
-        const musicToggle = Utils.$('#music-toggle');
+        const musicToggle = document.querySelector('#music-toggle');
         if (!musicToggle) return;
         
         // Create audio element
@@ -233,7 +272,7 @@ function showSection(sectionId) {
     
     // Setup confetti button
     setupConfetti() {
-        const confettiBtn = Utils.$('#confetti-btn');
+        const confettiBtn = document.querySelector('#confetti-btn');
         if (confettiBtn) {
             confettiBtn.addEventListener('click', () => {
                 Utils.launchConfetti();
