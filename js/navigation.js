@@ -33,33 +33,27 @@ const Navigation = {
     },
     
     // Show section with smooth scrolling
-    showSection(sectionId) {
-        // Hide all sections
-        Utils.$$('.section').forEach(section => {
-            section.classList.remove('active');
-        });
-        
-        // Show target section
-        const target = document.getElementById(sectionId);
-        if (target) {
-            target.classList.add('active');
-            Utils.state.currentSection = sectionId;
-            
-            // Smooth scroll with proper offset
-            setTimeout(() => {
-                const navbar = Utils.$('.navbar');
-                const isMobile = Utils.isMobile();
-                const navbarHeight = navbar ? navbar.offsetHeight : 0;
-                const offset = isMobile ? navbarHeight + 20 : navbarHeight;
-                
-                Utils.smoothScrollTo(target, offset);
-            }, 100);
-            
-            // Announce section change to screen readers
-            const sectionTitle = target.querySelector('h2, h1')?.textContent || sectionId;
-            Utils.announceToScreenReader(`Now viewing: ${sectionTitle}`);
-        }
-    },
+    // In the showSection function, update the quiz section handling:
+function showSection(sectionId) {
+    // ... existing code ...
+    
+    // 5. Special section initialization
+    if (sectionId === 'quiz') {
+        // Wait a tiny bit to ensure DOM is ready
+        setTimeout(() => {
+            // If quiz hasn't started but questions are loaded, start it
+            if (!Quiz.state.started && Quiz.state.questions.length > 0) {
+                Quiz.startNewQuiz();
+            }
+            // If questions aren't loaded yet, displayQuestion will handle it
+            else if (Quiz.state.questions.length === 0) {
+                // Show loading message
+                Utils.$('#question-text').textContent = "Loading questions...";
+                // The questions will load automatically via Quiz.init()
+            }
+        }, 100);
+    }
+}
     
     // Fix mobile navbar layout
     fixMobileNavbar() {
