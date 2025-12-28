@@ -215,3 +215,42 @@
     outline: 3px solid var(--accent-color);
     outline-offset: 3px;
 }
+
+
+/* EMERGENCY NAVBAR FIX */
+.nav-btn {
+    color: var(--text-color) !important;
+}
+
+.nav-btn.active {
+    color: white !important;
+}
+
+body.dark-theme .nav-btn {
+    color: #f0f0f0 !important;
+}
+
+body.dark-theme .nav-btn.active {
+    color: white !important;
+}
+
+/* Focus outlines */
+.nav-btn:focus,
+.game-btn:focus,
+.quiz-option:focus,
+.btn-primary:focus,
+.control-btn:focus {
+    outline: 3px solid var(--accent-color) !important;
+    outline-offset: 3px !important;
+}
+
+/* Fix for mobile navbar */
+@media (max-width: 768px) {
+    .nav-btn {
+        color: var(--text-color) !important;
+    }
+    
+    body.dark-theme .nav-btn {
+        color: #f0f0f0 !important;
+    }
+}
