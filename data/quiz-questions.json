@@ -1,0 +1,233 @@
+[
+  {
+    "topic": "Python Basics",
+    "question": "Which keyword is used to define a function in Python?",
+    "options": ["def", "function", "define", "func"],
+    "correct": 0,
+    "explanation": "The 'def' keyword is used to define functions. Example: def my_function():"
+  },
+  {
+    "topic": "Python Basics",
+    "question": "How do you create a list in Python?",
+    "options": ["[]", "()", "{}", "<>"],
+    "correct": 0,
+    "explanation": "Square brackets [] create lists. Example: my_list = [1, 2, 3]"
+  },
+  {
+    "topic": "Python Basics",
+    "question": "Which method removes whitespace from both ends of a string in Python?",
+    "options": ["strip()", "trim()", "clean()", "remove()"],
+    "correct": 0,
+    "explanation": "strip() removes whitespace from both ends. lstrip() and rstrip() remove from left/right only."
+  },
+  {
+    "topic": "Python Basics",
+    "question": "What is the output of: print(2 ** 3)?",
+    "options": ["8", "6", "9", "23"],
+    "correct": 0,
+    "explanation": "** is the exponentiation operator. 2 ** 3 means 2 raised to the power of 3, which is 8."
+  },
+  {
+    "topic": "Python Basics",
+    "question": "Which loop goes through a sequence in Python?",
+    "options": ["for loop", "while loop", "do-while loop", "repeat loop"],
+    "correct": 0,
+    "explanation": "for loop iterates through sequences. Python doesn't have do-while or repeat loops."
+  },
+  {
+    "topic": "Python Basics",
+    "question": "How do you get the length of a list?",
+    "options": ["len(list)", "list.length", "list.size", "length(list)"],
+    "correct": 0,
+    "explanation": "len() is a built-in function that works with lists, strings, tuples, etc."
+  },
+  {
+    "topic": "Python Basics",
+    "question": "Which data type is mutable (modifiable) in Python?",
+    "options": ["List", "Tuple", "String", "Integer"],
+    "correct": 0,
+    "explanation": "Lists are mutable (can be changed). Tuples and strings are immutable."
+  },
+  {
+    "topic": "Python Basics",
+    "question": "What does // operator do in Python?",
+    "options": ["Integer division", "Float division", "Modulus", "Exponentiation"],
+    "correct": 0,
+    "explanation": "// performs floor division (integer division). / performs float division."
+  },
+  {
+    "topic": "Python Basics",
+    "question": "How do you convert to integer in Python?",
+    "options": ["int()", "Integer()", "toInt()", "parseInt()"],
+    "correct": 0,
+    "explanation": "int() converts strings/floats to integers. float() and str() are similar."
+  },
+  {
+    "topic": "Python Basics",
+    "question": "What does range(5) generate in Python?",
+    "options": ["0,1,2,3,4", "1,2,3,4,5", "0,1,2,3,4,5", "5 numbers starting from 1"],
+    "correct": 0,
+    "explanation": "range(5) generates 0-4. range(1,6) would generate 1-5."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "Which method is the constructor?",
+    "options": ["__init__", "__new__", "__start__", "__create__"],
+    "correct": 0,
+    "explanation": "__init__ initializes new objects. __new__ actually creates them (less common)."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "What does 'self' represent?",
+    "options": ["Current instance", "The class", "Parent class", "Global object"],
+    "correct": 0,
+    "explanation": "'self' refers to the instance calling the method (like 'this' in other languages)."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "How do you create a class?",
+    "options": ["class MyClass:", "class MyClass()", "class MyClass{}", "MyClass class"],
+    "correct": 0,
+    "explanation": "Syntax: 'class ClassName:' Parentheses only needed for inheritance."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "Which is used for inheritance?",
+    "options": ["class Child(Parent):", "extends Parent", "inherits Parent", "Child : Parent"],
+    "correct": 0,
+    "explanation": "Python uses parentheses: class Child(Parent, AnotherParent):"
+  },
+  {
+    "topic": "Python OOP",
+    "question": "How do you call a parent method?",
+    "options": ["super().method()", "parent.method()", "self.parent()", "Parent.method()"],
+    "correct": 0,
+    "explanation": "super() gives access to parent class methods. Essential for method overriding."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "What is encapsulation?",
+    "options": ["Bundling data/methods", "Multiple inheritance", "Method overloading", "Dynamic typing"],
+    "correct": 0,
+    "explanation": "Encapsulation hides implementation details and groups related code."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "How to make a private attribute?",
+    "options": ["__attribute", "_attribute", "private attribute", "#attribute"],
+    "correct": 0,
+    "explanation": "Double underscore __ makes it name-mangled. Single underscore _ is convention."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "What is polymorphism?",
+    "options": ["Same interface, different implementation", "Hiding complexity", "Inheritance chain", "Data binding"],
+    "correct": 0,
+    "explanation": "Polymorphism allows objects of different types to respond to same method."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "Which is a magic method?",
+    "options": ["__str__", "__magic__", "__special__", "__method__"],
+    "correct": 0,
+    "explanation": "Magic methods have double underscores. __str__ defines string representation."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "What does @staticmethod do?",
+    "options": ["Defines static method", "Defines class method", "Defines private method", "Defines abstract method"],
+    "correct": 0,
+    "explanation": "@staticmethod doesn't receive self or cls. Used for utility functions."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "What is method overriding?",
+    "options": ["Redefining parent method", "Creating new method", "Hiding method", "Deleting method"],
+    "correct": 0,
+    "explanation": "Child class provides specific implementation of parent's method."
+  },
+  {
+    "topic": "Python OOP",
+    "question": "What is the purpose of __str__ method?",
+    "options": ["String representation", "Initialization", "Destruction", "Comparison"],
+    "correct": 0,
+    "explanation": "__str__ returns a string representation of the object, used by print() and str()."
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "Which operator declares a pointer in C++?",
+    "options": ["*", "&", "->", "::"],
+    "correct": 0,
+    "explanation": "* declares a pointer. & gets address. -> accesses members through pointer."
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "How to output in C++?",
+    "options": ["cout <<", "print()", "System.out.println", "console.log"],
+    "correct": 0,
+    "explanation": "cout with << operator. Requires #include <iostream> and using namespace std;"
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "Which is correct main function in C++?",
+    "options": ["int main()", "void main()", "main()", "function main()"],
+    "correct": 0,
+    "explanation": "int main() is standard. Returns 0 for success, non-zero for error."
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "What does #include do?",
+    "options": ["Includes header file", "Imports library", "Links library", "Defines macro"],
+    "correct": 0,
+    "explanation": "#include copies header file contents. Example: #include <iostream>"
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "How to allocate memory dynamically in C++?",
+    "options": ["new", "malloc", "alloc", "create"],
+    "correct": 0,
+    "explanation": "new allocates memory, returns pointer. delete frees it. C++ style, not malloc."
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "Which is a reference in C++?",
+    "options": ["int& x", "int* x", "int x", "ref int x"],
+    "correct": 0,
+    "explanation": "& after type creates reference (alias for variable). Must be initialized."
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "What is :: operator in C++?",
+    "options": ["Scope resolution", "Pointer access", "Reference", "Namespace"],
+    "correct": 0,
+    "explanation": ":: accesses global scope or class members. Example: std::cout, Class::method()"
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "How to create a class in C++?",
+    "options": ["class MyClass {}", "class MyClass:", "MyClass class {}", "class: MyClass"],
+    "correct": 0,
+    "explanation": "C++ uses braces {} and semicolon after class definition."
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "What is cin in C++?",
+    "options": ["Standard input", "Standard output", "Console input", "Character input"],
+    "correct": 0,
+    "explanation": "cin with >> operator reads input. Example: cin >> variable;"
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "Which loop is NOT in C++?",
+    "options": ["for...in", "for", "while", "do...while"],
+    "correct": 0,
+    "explanation": "C++ has for, while, do...while. for...in is from Python/JavaScript."
+  },
+  {
+    "topic": "C++ Basics",
+    "question": "What does const do in C++?",
+    "options": ["Makes variable immutable", "Declares constant", "Defines function", "Creates reference"],
+    "correct": 0,
+    "explanation": "const makes variable read-only. Must be initialized. Example: const int x = 5;"
+  }
+]
