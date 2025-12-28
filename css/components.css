@@ -27,6 +27,7 @@
 }
 
 /* ===== NAVIGATION BUTTONS ===== */
+/* ===== NAVIGATION BUTTONS ===== */
 .nav-btn {
     padding: 12px 25px;
     background: transparent;
@@ -41,8 +42,10 @@
     gap: 8px;
     transition: var(--transition);
     white-space: nowrap;
+    outline: none;
 }
 
+/* Light theme navbar button colors */
 .nav-btn:hover {
     background: rgba(108, 99, 255, 0.1);
     border-color: var(--primary-color);
@@ -51,14 +54,56 @@
 
 .nav-btn.active {
     background: var(--primary-color);
-    color: white;
+    color: white !important;
     border-color: var(--primary-color);
     box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
 }
 
-.nav-btn:focus {
-    outline: 3px solid var(--primary-color);
-    outline-offset: 2px;
+/* Focus states for all buttons */
+.nav-btn:focus,
+.game-btn:focus,
+.quiz-option:focus,
+.btn-primary:focus,
+.control-btn:focus {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+/* Remove default outline only when we provide custom one */
+button:focus,
+a:focus {
+    outline: none;
+}
+
+/* Use :focus-visible for modern browsers */
+.nav-btn:focus-visible,
+.game-btn:focus-visible,
+.quiz-option:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+/* Navbar container */
+.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    width: 100%;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* ===== GAME BUTTONS ===== */
@@ -216,41 +261,3 @@
     outline-offset: 3px;
 }
 
-
-/* EMERGENCY NAVBAR FIX */
-.nav-btn {
-    color: var(--text-color) !important;
-}
-
-.nav-btn.active {
-    color: white !important;
-}
-
-body.dark-theme .nav-btn {
-    color: #f0f0f0 !important;
-}
-
-body.dark-theme .nav-btn.active {
-    color: white !important;
-}
-
-/* Focus outlines */
-.nav-btn:focus,
-.game-btn:focus,
-.quiz-option:focus,
-.btn-primary:focus,
-.control-btn:focus {
-    outline: 3px solid var(--accent-color) !important;
-    outline-offset: 3px !important;
-}
-
-/* Fix for mobile navbar */
-@media (max-width: 768px) {
-    .nav-btn {
-        color: var(--text-color) !important;
-    }
-    
-    body.dark-theme .nav-btn {
-        color: #f0f0f0 !important;
-    }
-}
