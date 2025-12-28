@@ -1,0 +1,140 @@
+/* ===== CONTAINER ===== */
+.container {
+    width: min(1200px, 92vw);
+    margin: 0 auto;
+    padding: 0 clamp(15px, 3vw, 30px);
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    width: 100%;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+    display: none;
+    padding: clamp(50px, 8vw, 80px) 0;
+    opacity: 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.section.active {
+    display: block;
+    animation: sectionFade 0.5s ease forwards;
+}
+
+@keyframes sectionFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 60px;
+    min-height: 500px;
+}
+
+.hero-content {
+    animation: fadeInLeft 1s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-image {
+    animation: fadeInRight 1s ease;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===== GRIDS ===== */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.options-grid {
+    display: grid;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background: var(--light-bg);
+    padding: 60px 0 30px;
+    margin-top: 60px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #ddd;
+    color: #666;
+}
