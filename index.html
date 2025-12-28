@@ -1,407 +1,484 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character Encoding & Viewport -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    
+    <!-- Page Title -->
     <title>Happy 18th Birthday Fatima! 🎂</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Meta Description for SEO -->
+    <meta name="description" content="An interactive digital birthday gift for Fatima, featuring games, CS quiz, and personal messages.">
+    <meta name="author" content="Ali Madad">
+    
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:title" content="Happy 18th Birthday Fatima! 🎂">
+    <meta property="og:description" content="A personalized digital gift built with HTML, CSS & JavaScript.">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Happy 18th Birthday Fatima! 🎂">
+    
+    <!-- Apple Mobile Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" as="image" href="assets/fatima1.png">
+    
+    <!-- External Resources -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Modular CSS Files -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>">
 </head>
 <body>
+    <!-- Skip to Content Link (Accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Live Region for Screen Readers -->
+    <div aria-live="polite" aria-atomic="true" id="live-region" class="sr-only"></div>
+    
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" aria-label="Main navigation">
         <div class="nav-container">
-    <a href="#home" class="nav-btn"><i class="fas fa-home"></i> <span class="nav-text">Home</span></a>
-    <a href="#gallery" class="nav-btn"><i class="fas fa-images"></i> <span class="nav-text">Gallery</span></a>
-    <a href="#games" class="nav-btn"><i class="fas fa-gamepad"></i> <span class="nav-text">Games</span></a>
-    <a href="#quiz" class="nav-btn"><i class="fas fa-code"></i> <span class="nav-text">Quiz</span></a>
-    <a href="#message" class="nav-btn"><i class="fas fa-envelope"></i> <span class="nav-text">Message</span></a>
-    <!-- ⬇️ ADD THIS NEW LINK ⬇️ -->
-    <a href="#write-back" class="nav-btn"><i class="fas fa-reply"></i> <span class="nav-text">Write Back</span></a>
-</div>
+            <a href="#home" class="nav-btn" aria-label="Home">
+                <i class="fas fa-home" aria-hidden="true"></i> 
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="#gallery" class="nav-btn" aria-label="Photo Gallery">
+                <i class="fas fa-images" aria-hidden="true"></i> 
+                <span class="nav-text">Gallery</span>
+            </a>
+            <a href="#games" class="nav-btn" aria-label="Games">
+                <i class="fas fa-gamepad" aria-hidden="true"></i> 
+                <span class="nav-text">Games</span>
+            </a>
+            <a href="#quiz" class="nav-btn" aria-label="CS Quiz">
+                <i class="fas fa-code" aria-hidden="true"></i> 
+                <span class="nav-text">Quiz</span>
+            </a>
+            <a href="#message" class="nav-btn" aria-label="Message">
+                <i class="fas fa-envelope" aria-hidden="true"></i> 
+                <span class="nav-text">Message</span>
+            </a>
+            <a href="#write-back" class="nav-btn" aria-label="Write Back">
+                <i class="fas fa-reply" aria-hidden="true"></i> 
+                <span class="nav-text">Write Back</span>
+            </a>
+        </div>
     </nav>
 
-    <!-- Home Section -->
-    <section id="home" class="section active">
-        <div class="container">
-            <div class="hero-section">
-                <div class="hero-content">
-                    <h1 class="hero-title">🎉 Happy 18th Birthday, Fatima! 🥳</h1>
-                    <p class="hero-subtitle">Welcome to your personalized digital gift!</p>
-                    <p class="hero-text">This website was coded from scratch just for you, combining our shared love for technology and creativity.</p>
-                    
-                    <div class="hero-features">
-                        <div class="feature">
-                            <i class="fas fa-gift"></i>
-                            <span>Interactive Games</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-images"></i>
-                            <span>Memory Gallery</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-brain"></i>
-                            <span>CS Knowledge Quiz</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-music"></i>
-                            <span>Birthday Music</span>
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button id="confetti-btn" class="btn-primary">
-                            <i class="fas fa-birthday-cake"></i> Launch Confetti!
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="hero-image">
-                    <div class="image-frame">
-                        <img src="assets/fatima1.png" alt="Fatima on her birthday" class="main-photo">
-                        <div class="photo-badge">You're 18! 🎈</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section id="gallery" class="section">
-        <div class="container">
-            <h2 class="section-title"><i class="fas fa-images"></i> Memory Gallery</h2>
-            <p class="section-subtitle">These moments are forever! 📸</p>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="assets/fatima1.png" alt="Happy moment with Fatima" loading="lazy">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Great Times!</h3>
-                        <p>CS Class Memories 😊</p>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="assets/fatima2.png" alt="Celebrating together" loading="lazy">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Best Memories!</h3>
-                        <p>Happy Moments ✨</p>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="assets/fatima3.png" alt="Fun times in class" loading="lazy">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>CS Class!</h3>
-                        <p>Learning Together 💻</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Games Section -->
-    <section id="games" class="section">
-        <div class="container">
-            <h2 class="section-title"><i class="fas fa-gamepad"></i> Birthday Games</h2>
-            <p class="section-subtitle">Try these fun games made just for you! 🎮</p>
-            
-            <div class="games-grid">
-                <!-- Game 1: Click Challenge -->
-                <div class="game-card">
-                    <div class="game-header">
-                        <i class="fas fa-mouse-pointer"></i>
-                        <h3>Click Challenge</h3>
-                    </div>
-                    <div class="game-description">
-                        <p>How many times can you click in 10 seconds?</p>
-                        <div class="game-stats">
-                            <span><i class="fas fa-trophy"></i> High Score: <span id="click-highscore">0</span></span>
-                            <span><i class="fas fa-fire"></i> CPS: <span id="click-cps">0</span></span>
-                        </div>
-                    </div>
-                    <div class="click-container">
-                        <div class="click-area" id="click-area">
-                            <div class="click-counter">
-                                <h2 id="click-count">0</h2>
-                                <p>Clicks</p>
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active" aria-labelledby="home-title">
+            <div class="container">
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <h1 id="home-title" class="hero-title">🎉 Happy 18th Birthday, Fatima! 🥳</h1>
+                        <p class="hero-subtitle">Welcome to your personalized digital gift!</p>
+                        <p class="hero-text">This website was coded from scratch just for you, combining our shared love for technology and creativity.</p>
+                        
+                        <div class="hero-features" role="list">
+                            <div class="feature" role="listitem">
+                                <i class="fas fa-gift" aria-hidden="true"></i>
+                                <span>Interactive Games</span>
                             </div>
-                            <div class="click-timer">
-                                <div class="timer-circle">
-                                    <span id="click-timer">10</span>s
+                            <div class="feature" role="listitem">
+                                <i class="fas fa-images" aria-hidden="true"></i>
+                                <span>Memory Gallery</span>
+                            </div>
+                            <div class="feature" role="listitem">
+                                <i class="fas fa-brain" aria-hidden="true"></i>
+                                <span>CS Knowledge Quiz</span>
+                            </div>
+                            <div class="feature" role="listitem">
+                                <i class="fas fa-music" aria-hidden="true"></i>
+                                <span>Birthday Music</span>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button id="confetti-btn" class="btn-primary">
+                                <i class="fas fa-birthday-cake" aria-hidden="true"></i> Launch Confetti!
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <figure class="hero-image">
+                        <div class="image-frame">
+                            <img src="assets/fatima1.png" alt="Fatima celebrating her 18th birthday" class="main-photo" width="500" height="400">
+                            <div class="photo-badge" aria-hidden="true">You're 18! 🎈</div>
+                        </div>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section" aria-labelledby="gallery-title">
+            <div class="container">
+                <h2 id="gallery-title" class="section-title">
+                    <i class="fas fa-images" aria-hidden="true"></i> Memory Gallery
+                </h2>
+                <p class="section-subtitle">These moments are forever! 📸</p>
+                
+                <div class="gallery-grid">
+                    <article class="gallery-item">
+                        <figure class="gallery-image">
+                            <img src="assets/fatima1.png" alt="Fatima having great times in CS class" loading="lazy" width="400" height="300">
+                        </figure>
+                        <div class="gallery-caption">
+                            <h3>Great Times!</h3>
+                            <p>CS Class Memories 😊</p>
+                        </div>
+                    </article>
+                    
+                    <article class="gallery-item">
+                        <figure class="gallery-image">
+                            <img src="assets/fatima2.png" alt="Celebrating best memories together" loading="lazy" width="400" height="300">
+                        </figure>
+                        <div class="gallery-caption">
+                            <h3>Best Memories!</h3>
+                            <p>Happy Moments ✨</p>
+                        </div>
+                    </article>
+                    
+                    <article class="gallery-item">
+                        <figure class="gallery-image">
+                            <img src="assets/fatima3.png" alt="Working together in CS class" loading="lazy" width="400" height="300">
+                        </figure>
+                        <div class="gallery-caption">
+                            <h3>CS Class!</h3>
+                            <p>Learning Together 💻</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games Section -->
+        <section id="games" class="section" aria-labelledby="games-title">
+            <div class="container">
+                <h2 id="games-title" class="section-title">
+                    <i class="fas fa-gamepad" aria-hidden="true"></i> Birthday Games
+                </h2>
+                <p class="section-subtitle">Try these fun games made just for you! 🎮</p>
+                
+                <div class="games-grid">
+                    <!-- Game 1: Click Challenge -->
+                    <article class="game-card">
+                        <header class="game-header">
+                            <i class="fas fa-mouse-pointer" aria-hidden="true"></i>
+                            <h3>Click Challenge</h3>
+                        </header>
+                        <div class="game-description">
+                            <p>How many times can you click in 10 seconds?</p>
+                            <div class="game-stats">
+                                <span><i class="fas fa-trophy" aria-hidden="true"></i> High Score: <span id="click-highscore">0</span></span>
+                                <span><i class="fas fa-fire" aria-hidden="true"></i> CPS: <span id="click-cps">0</span></span>
+                            </div>
+                        </div>
+                        <div class="click-container">
+                            <button class="click-area" id="click-area" aria-label="Click area for click challenge game">
+                                <div class="click-counter">
+                                    <h2 id="click-count">0</h2>
+                                    <p>Clicks</p>
+                                </div>
+                                <div class="click-timer">
+                                    <div class="timer-circle">
+                                        <span id="click-timer">10</span>s
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="game-controls">
+                            <button id="start-click" class="game-btn">
+                                <i class="fas fa-play" aria-hidden="true"></i> Start Clicking
+                            </button>
+                            <button id="reset-click" class="game-btn secondary">
+                                <i class="fas fa-trash" aria-hidden="true"></i> Clear Scores
+                            </button>
+                        </div>
+                    </article>
+                    
+                    <!-- Game 2: Reaction Test -->
+                    <article class="game-card">
+                        <header class="game-header">
+                            <i class="fas fa-bolt" aria-hidden="true"></i>
+                            <h3>Reaction Test</h3>
+                        </header>
+                        <div class="game-description">
+                            <p>Test how fast you can click when the color changes!</p>
+                            <div class="game-stats">
+                                <span><i class="fas fa-stopwatch" aria-hidden="true"></i> Best: <span id="reaction-best">0.00s</span></span>
+                                <span><i class="fas fa-tachometer-alt" aria-hidden="true"></i> Avg: <span id="reaction-avg">0.00s</span></span>
+                            </div>
+                        </div>
+                        <div class="reaction-container">
+                            <button class="reaction-area" id="reaction-area" aria-label="Reaction test area">
+                                <div class="reaction-instruction">
+                                    <p>Wait for green, then click!</p>
+                                    <div class="reaction-timer">Click to Start</div>
+                                </div>
+                            </button>
+                            <div class="reaction-results">
+                                <div class="result-item">
+                                    <span>Last Reaction:</span>
+                                    <strong id="reaction-last">0.00s</strong>
+                                </div>
+                                <div class="result-item">
+                                    <span>Attempts:</span>
+                                    <strong id="reaction-attempts">0</strong>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="game-controls">
-                        <button id="start-click" class="game-btn">
-                            <i class="fas fa-play"></i> Start Clicking
-                        </button>
-                        <button id="reset-click" class="game-btn secondary">
-                            <i class="fas fa-trash"></i> Clear Scores
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Game 2: Reaction Test -->
-                <div class="game-card">
-                    <div class="game-header">
-                        <i class="fas fa-bolt"></i>
-                        <h3>Reaction Test</h3>
-                    </div>
-                    <div class="game-description">
-                        <p>Test how fast you can click when the color changes!</p>
-                        <div class="game-stats">
-                            <span><i class="fas fa-stopwatch"></i> Best: <span id="reaction-best">0.00s</span></span>
-                            <span><i class="fas fa-tachometer-alt"></i> Avg: <span id="reaction-avg">0.00s</span></span>
+                        <div class="game-controls">
+                            <button id="start-reaction" class="game-btn">
+                                <i class="fas fa-play" aria-hidden="true"></i> Start Test
+                            </button>
+                            <button id="reset-reaction" class="game-btn secondary">
+                                <i class="fas fa-chart-bar" aria-hidden="true"></i> Stats
+                            </button>
                         </div>
-                    </div>
-                    <div class="reaction-container">
-                        <div class="reaction-area" id="reaction-area">
-                            <div class="reaction-instruction">
-                                <p>Wait for green, then click!</p>
-                                <div class="reaction-timer">Click to Start</div>
-                            </div>
-                        </div>
-                        <div class="reaction-results">
-                            <div class="result-item">
-                                <span>Last Reaction:</span>
-                                <strong id="reaction-last">0.00s</strong>
-                            </div>
-                            <div class="result-item">
-                                <span>Attempts:</span>
-                                <strong id="reaction-attempts">0</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-controls">
-                        <button id="start-reaction" class="game-btn">
-                            <i class="fas fa-play"></i> Start Test
-                        </button>
-                        <button id="reset-reaction" class="game-btn secondary">
-                            <i class="fas fa-chart-bar"></i> Stats
-                        </button>
-                    </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CS Quiz Section -->
-    <section id="quiz" class="section">
-        <div class="container">
-            <h2 class="section-title"><i class="fas fa-code"></i> CS Knowledge Challenge</h2>
-            <p class="section-subtitle">Test your programming skills with 30+ random questions!</p>
-            
-            <div class="quiz-container">
-                <div class="quiz-header">
-                    <div class="quiz-info">
-                        <div class="topic-badge" id="topic-badge">Python Basics</div>
-                        <div class="quiz-progress">
-                            Question <span id="current-q">1</span> of <span id="total-q">30</span>
-                        </div>
-                    </div>
-                    <div class="quiz-score">
-                        <i class="fas fa-star"></i>
-                        <span>Score: <strong id="quiz-score">0</strong></span>
-                    </div>
-                </div>
+        <!-- CS Quiz Section -->
+        <section id="quiz" class="section" aria-labelledby="quiz-title">
+            <div class="container">
+                <h2 id="quiz-title" class="section-title">
+                    <i class="fas fa-code" aria-hidden="true"></i> CS Knowledge Challenge
+                </h2>
+                <p class="section-subtitle">Test your programming skills with 30+ random questions!</p>
                 
-                <div class="quiz-body">
-                    <h3 id="question-text">Loading question...</h3>
-                    
-                    <div id="options-container" class="options-grid">
-                        <!-- Options will be loaded by JavaScript -->
-                    </div>
-                    
-                    <div class="explanation-box">
-                        <h4><i class="fas fa-lightbulb"></i> Explanation</h4>
-                        <p id="explanation-text">Select an answer to see the explanation</p>
-                    </div>
-                </div>
-                
-                <div class="quiz-footer">
-                    <div class="quiz-controls">
-                        <button id="prev-question" class="quiz-btn">
-                            <i class="fas fa-arrow-left"></i> Previous
-                        </button>
-                        <button id="next-question" class="quiz-btn">
-                            Next <i class="fas fa-arrow-right"></i>
-                        </button>
-                        <button id="submit-quiz" class="quiz-btn primary">
-                            <i class="fas fa-paper-plane"></i> Submit Quiz
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="quiz-results" class="results-container" style="display: none;">
-                    <div class="results-header">
-                        <i class="fas fa-trophy"></i>
-                        <h3>Quiz Complete!</h3>
-                    </div>
-                    <div class="results-body">
-                        <div class="result-score">
-                            <h2>Your Score</h2>
-                            <div class="score-circle">
-                                <span id="final-score">0</span>/<span id="max-score">30</span>
+                <div class="quiz-container">
+                    <header class="quiz-header">
+                        <div class="quiz-info">
+                            <div class="topic-badge" id="topic-badge">Python Basics</div>
+                            <div class="quiz-progress">
+                                Question <span id="current-q">1</span> of <span id="total-q">30</span>
                             </div>
                         </div>
-                        <div class="result-message">
-                            <p id="result-message">Loading your results...</p>
+                        <div class="quiz-score">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <span>Score: <strong id="quiz-score">0</strong></span>
                         </div>
-                    </div>
-                    <div class="results-footer">
-                        <button id="restart-quiz" class="btn-primary">
-                            <i class="fas fa-redo"></i> Try Again
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Message Section -->
-    <section id="message" class="section">
-        <div class="container">
-            <div class="message-container">
-                <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> A Personal Message</h2>
-                <p class="section-subtitle">From your quiet classmate who speaks through code</p>
-                
-                <div class="message-card">
-                    <div class="message-header">
-                        <div class="message-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="message-title">
-                            <h3>For Fatima, on your 18th</h3>
-                            <p class="message-date">Birthday 2025</p>
-                        </div>
-                    </div>
+                    </header>
                     
-                    <div class="message-body">
-                        <div class="message-content">
-                            <p>Dear Fatima,</p>
-                            <p>Happy 18th birthday! 🚀 As we celebrate this milestone, I wanted to create something meaningful that combines our shared passion for technology. While I might be the quiet one in class (yes, that introvert who prefers observing from the back), I've always admired your intelligence and determination.</p>
-                            <p>This website represents more than just code - it's my way of saying you're an incredible person. Every line here was written with care, just like how we debug our CS projects together. I remember those late nights working on assignments, your patience when explaining concepts, and your brilliant solutions to complex problems.</p>
-                            <p>As you step into adulthood, may your life be filled with:</p>
-                            <ul class="message-list">
-                                <li><i class="fas fa-check-circle"></i> Code that compiles on the first try</li>
-                                <li><i class="fas fa-check-circle"></i> Algorithms that always find optimal solutions</li>
-                                <li><i class="fas fa-check-circle"></i> Projects that exceed all expectations</li>
-                                <li><i class="fas fa-check-circle"></i> Happiness that needs no debugging</li>
-                            </ul>
-                            <p>Remember, in the grand algorithm of life, you're already the optimal solution. Don't ever let imposter syndrome tell you otherwise. Your potential is as infinite as a while True loop (but hopefully with better exit conditions! 😄).</p>
-                            <blockquote class="message-quote">
-                                "The best way to predict the future is to invent it." – Alan Kay
-                            </blockquote>
-                            <p>Here's to inventing an amazing future together, one line of code at a time.</p>
-                            <p>Hope you are always praying and reading and i just want to tell you that you are gentle and have a soft heart :) and that you are most amazing person i know </p>
+                    <div class="quiz-body">
+                        <h3 id="question-text">Loading question...</h3>
+                        
+                        <div id="options-container" class="options-grid" role="radiogroup" aria-label="Quiz options">
+                            <!-- Options loaded by JavaScript -->
                         </div>
                         
-                        <div class="message-footer">
-                            <div class="signature">
-                                <p>With admiration and code,</p>
-                                <h4>Ali Madad</h4>
-                                <p class="signature-note">(The quiet CS student who notices more than he says)</p>
+                        <div class="explanation-box">
+                            <h4><i class="fas fa-lightbulb" aria-hidden="true"></i> Explanation</h4>
+                            <p id="explanation-text">Select an answer to see the explanation</p>
+                        </div>
+                    </div>
+                    
+                    <footer class="quiz-footer">
+                        <div class="quiz-controls">
+                            <button id="prev-question" class="quiz-btn">
+                                <i class="fas fa-arrow-left" aria-hidden="true"></i> Previous
+                            </button>
+                            <button id="next-question" class="quiz-btn">
+                                Next <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </button>
+                            <button id="submit-quiz" class="quiz-btn primary">
+                                <i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Quiz
+                            </button>
+                        </div>
+                    </footer>
+                    
+                    <div id="quiz-results" class="results-container" hidden>
+                        <div class="results-header">
+                            <i class="fas fa-trophy" aria-hidden="true"></i>
+                            <h3>Quiz Complete!</h3>
+                        </div>
+                        <div class="results-body">
+                            <div class="result-score">
+                                <h2>Your Score</h2>
+                                <div class="score-circle">
+                                    <span id="final-score">0</span>/<span id="max-score">30</span>
+                                </div>
                             </div>
+                            <div class="result-message">
+                                <p id="result-message">Loading your results...</p>
+                            </div>
+                        </div>
+                        <div class="results-footer">
+                            <button id="restart-quiz" class="btn-primary">
+                                <i class="fas fa-redo" aria-hidden="true"></i> Try Again
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 1. Add this HTML to your site (e.g., in the Message section or a new "Write Back" section) -->
-    <section id="write-back" class="section">
-    <div class="container">
-        <h2 class="section-title"><i class="fas fa-reply"></i> Write a Message to Ali!</h2>
-        <p class="section-subtitle">If you'd like to say thanks, anything new you want me to add that might be pleasing to you or somthing you like about web or just leave a note, I'd love to hear from you!</p>
-        
-        <form id="message-form" action="https://formspree.io/f/xojqabry" method="POST">
-            <div class="form-group">
-                <label for="sender-name">Your Name:</label>
-                <input type="text" id="sender-name" name="name" placeholder="Your name here" required>
+        <!-- Message Section -->
+        <section id="message" class="section" aria-labelledby="message-title">
+            <div class="container">
+                <div class="message-container">
+                    <h2 id="message-title" class="section-title">
+                        <i class="fas fa-envelope-open-text" aria-hidden="true"></i> A Personal Message
+                    </h2>
+                    <p class="section-subtitle">From your quiet classmate who speaks through code</p>
+                    
+                    <article class="message-card">
+                        <header class="message-header">
+                            <div class="message-icon">
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                            </div>
+                            <div class="message-title">
+                                <h3>For Fatima, on your 18th</h3>
+                                <p class="message-date">Birthday 2025</p>
+                            </div>
+                        </header>
+                        
+                        <div class="message-body">
+                            <div class="message-content">
+                                <p>Dear Fatima,</p>
+                                <p>Happy 18th birthday! 🚀 As we celebrate this milestone, I wanted to create something meaningful that combines our shared passion for technology.</p>
+                                <p>This website represents more than just code - it's my way of saying you're an incredible person.</p>
+                                <p>As you step into adulthood, may your life be filled with:</p>
+                                <ul class="message-list">
+                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Code that compiles on the first try</li>
+                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Algorithms that always find optimal solutions</li>
+                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Projects that exceed all expectations</li>
+                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Happiness that needs no debugging</li>
+                                </ul>
+                                <blockquote class="message-quote">
+                                    "The best way to predict the future is to invent it." – Alan Kay
+                                </blockquote>
+                                <p>Hope you are always praying and reading and I just want to tell you that you are gentle and have a soft heart :)</p>
+                            </div>
+                            
+                            <footer class="message-footer">
+                                <div class="signature">
+                                    <p>With admiration and code,</p>
+                                    <h4>Ali Madad</h4>
+                                    <p class="signature-note">(The quiet CS student who notices more than he says)</p>
+                                </div>
+                            </footer>
+                        </div>
+                    </article>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="sender-message">Your Message to Ali:</label>
-                <textarea id="sender-message" name="message" rows="4" 
-                          placeholder="Type your message here..." required></textarea>
+        </section>
+
+        <!-- Write Back Section -->
+        <section id="write-back" class="section" aria-labelledby="writeback-title">
+            <div class="container">
+                <h2 id="writeback-title" class="section-title">
+                    <i class="fas fa-reply" aria-hidden="true"></i> Write a Message to Ali!
+                </h2>
+                <p class="section-subtitle">If you'd like to say thanks or leave a note, I'd love to hear from you!</p>
+                
+                <form id="message-form" action="https://formspree.io/f/" method="POST">
+                    <div class="form-group">
+                        <label for="sender-name">Your Name:</label>
+                        <input type="text" id="sender-name" name="name" placeholder="Your name here" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sender-message">Your Message:</label>
+                        <textarea id="sender-message" name="message" rows="4" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    <input type="hidden" name="_subject" value="Message from Fatima's Birthday Site!">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message to Ali
+                    </button>
+                    <div id="form-feedback"></div>
+                </form>
             </div>
-            <input type="hidden" name="_subject" value="Message from Fatima's Birthday Site!">
-            <button type="submit" class="btn-primary">
-                <i class="fas fa-paper-plane"></i> Send Message to Ali
-            </button>
-            <div id="form-feedback"></div>
-        </form>
-    </div>
-</section>
+        </section>
+    </main>
 
     <!-- Welcome Popup -->
-<div id="welcome-popup" class="welcome-popup">
-    <div class="popup-content">
-        <button class="close-popup">&times;</button>
-        <div class="popup-icon">🎂</div>
-        <h2>Welcome, Fatima! 🎉</h2>
-        <p class="popup-text">Happy 18th Birthday! This digital gift was coded just for you.</p>
-        <p class="popup-hint">Explore the sections above to find games, memories, and a special message from Ali!</p>
-        <div class="popup-actions">
-            <button class="btn-primary start-confetti">
-                <i class="fas fa-birthday-cake"></i> Launch Confetti Now!
-            </button>
-            <button class="btn-secondary close-btn">
-                <i class="fas fa-rocket"></i> Start Exploring
-            </button>
+    <div id="welcome-popup" class="welcome-popup" role="dialog" aria-labelledby="popup-title" aria-modal="true" hidden>
+        <div class="popup-content">
+            <button class="close-popup" aria-label="Close welcome popup">&times;</button>
+            <div class="popup-icon" aria-hidden="true">🎂</div>
+            <h2 id="popup-title">Welcome, Fatima! 🎉</h2>
+            <p class="popup-text">Happy 18th Birthday! This digital gift was coded just for you.</p>
+            <p class="popup-hint">Explore the sections above to find games, memories, and a special message from Ali!</p>
+            <div class="popup-actions">
+                <button class="btn-primary start-confetti">
+                    <i class="fas fa-birthday-cake" aria-hidden="true"></i> Launch Confetti Now!
+                </button>
+                <button class="btn-secondary close-btn">
+                    <i class="fas fa-rocket" aria-hidden="true"></i> Start Exploring
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <h3><i class="fas fa-birthday-cake"></i> Fatima's 18th</h3>
+                    <h3><i class="fas fa-birthday-cake" aria-hidden="true"></i> Fatima's 18th</h3>
                     <p>A digital gift crafted with code</p>
                 </div>
                 
                 <div class="footer-info">
-                    <p><i class="fas fa-code"></i> Built with HTML, CSS & JavaScript</p>
-                    <p><i class="fas fa-user"></i> Created by Ali Madad</p>
-                    <p><i class="fas fa-calendar"></i> Birthday 2025</p>
+                    <p><i class="fas fa-code" aria-hidden="true"></i> Built with HTML, CSS & JavaScript</p>
+                    <p><i class="fas fa-user" aria-hidden="true"></i> Created by Ali Madad</p>
+                    <p><i class="fas fa-calendar" aria-hidden="true"></i> Birthday 2025</p>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>Made with <i class="fas fa-heart heart-icon"></i> for Fatima's 18th Birthday</p>
+                <p>Made with <i class="fas fa-heart heart-icon" aria-hidden="true"></i> for Fatima's 18th Birthday</p>
             </div>
         </div>
     </footer>
 
-
     <!-- Control Panel -->
-    <div class="control-panel">
-        <button id="music-toggle" class="control-btn" title="Toggle Music">
-            <i class="fas fa-music"></i>
+    <div class="control-panel" aria-label="Control panel">
+        <button id="music-toggle" class="control-btn" title="Toggle Music" aria-label="Toggle background music">
+            <i class="fas fa-music" aria-hidden="true"></i>
             <span class="btn-label">Music</span>
         </button>
-        <button id="theme-toggle" class="control-btn" title="Toggle Theme">
-            <i class="fas fa-moon"></i>
+        <button id="theme-toggle" class="control-btn" title="Toggle Theme" aria-label="Toggle dark/light theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
             <span class="btn-label">Theme</span>
         </button>
     </div>
 
     <!-- Confetti Canvas -->
-    <canvas id="confetti-canvas"></canvas>
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
 
-    <!-- Scripts -->
+    <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
+    
+    <!-- Modular JavaScript Files -->
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/games.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/form.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
