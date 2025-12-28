@@ -7,38 +7,32 @@ const Quiz = {
         score: 0,
         answers: [],
         started: false,
-        isLoading: false  // Add this flag
+        loaded: false
     },
     
     // Initialize quiz
     async init() {
         await this.loadQuizData();
         this.setupEventListeners();
-        
-        // Remove initial loading message - show first question immediately if data is loaded
-        const questionText = Utils.$('#question-text');
-        if (questionText && this.state.questions.length > 0) {
-            this.state.currentIndex = 0;
-            this.displayQuestion();
-        }
+        console.log("✅ Quiz system initialized");
     },
     
     // Load quiz questions from JSON
     async loadQuizData() {
         try {
-            this.state.isLoading = true;
+            console.log("📥 Loading quiz questions...");
             const response = await fetch('data/quiz-questions.json');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
             this.state.questions = await response.json();
             this.randomizeQuestions();
+            this.state.loaded = true;
             
             console.log(`✅ Loaded ${this.state.questions.length} questions`);
             
-            // Immediately display first question if on quiz section
-            if (Utils.state.currentSection === 'quiz') {
-                this.state.currentIndex = 0;
-                this.displayQuestion();
+            // If we're already on the quiz section, show first question
+            if (document.getElementById('quiz').classList.contains('active')) {
+                this.startNewQuiz();
             }
             
         } catch (error) {
@@ -46,17 +40,13 @@ const Quiz = {
             
             // Fallback questions
             this.state.questions = [{
-                topic: "Error",
-                question: "Questions could not be loaded.",
-                options: ["Please try refreshing the page"],
+                topic: "CS Basics",
+                question: "Questions couldn't load. Try refreshing the page.",
+                options: ["Refresh page", "Check console", "Contact Ali", "Try later"],
                 correct: 0,
-                explanation: "Check the console for errors."
+                explanation: "The quiz data failed to load from the server."
             }];
-            
-            // Show error immediately
-            this.displayQuestion();
-        } finally {
-            this.state.isLoading = false;
+            this.state.loaded = true;
         }
     },
     
@@ -87,62 +77,59 @@ const Quiz = {
     
     // Setup event listeners
     setupEventListeners() {
-        Utils.$('#prev-question')?.addEventListener('click', () => this.showPreviousQuestion());
-        Utils.$('#next-question')?.addEventListener('click', () => this.showNextQuestion());
-        Utils.$('#submit-quiz')?.addEventListener('click', () => this.submitQuiz());
-        Utils.$('#restart-quiz')?.addEventListener('click', () => this.startNewQuiz());
+        document.getElementById('prev-question')?.addEventListener('click', () => this.showPreviousQuestion());
+        document.getElementById('next-question')?.addEventListener('click', () => this.showNextQuestion());
+        document.getElementById('submit-quiz')?.addEventListener('click', () => this.submitQuiz());
+        document.getElementById('restart-quiz')?.addEventListener('click', () => this.startNewQuiz());
     },
     
     // Start new quiz
     startNewQuiz() {
+        if (!this.state.loaded) {
+            console.log("⚠️ Quiz data not loaded yet");
+            document.getElementById('question-text').textContent = "Loading questions...";
+            return;
+        }
+        
+        console.log("🎯 Starting new quiz");
+        
         this.state.currentIndex = 0;
         this.state.score = 0;
         this.state.answers = new Array(this.state.questions.length).fill(null);
         this.state.started = true;
         
         // Update UI
-        Utils.$('#quiz-results').hidden = true;
-        Utils.$('.quiz-body').style.display = 'block';
-        Utils.$('.quiz-footer').style.display = 'flex';
+        document.getElementById('quiz-results').style.display = 'none';
+        document.querySelector('.quiz-body').style.display = 'block';
+        document.querySelector('.quiz-footer').style.display = 'flex';
         
-        // Display first question immediately
+        // Display first question
         this.displayQuestion();
-        Utils.announceToScreenReader('New quiz started!');
-    }
+    },
     
     // Display current question
     displayQuestion() {
-        // Clear any loading message immediately
-        const questionText = Utils.$('#question-text');
-        const optionsContainer = Utils.$('#options-container');
-        
-        // If no questions loaded yet, show loading or fallback
-        if (this.state.questions.length === 0) {
-            if (this.state.isLoading) {
-                questionText.textContent = "Loading questions...";
-            } else {
-                questionText.textContent = "No questions available. Please refresh.";
-            }
-            optionsContainer.innerHTML = '';
+        if (!this.state.loaded || this.state.questions.length === 0) {
+            document.getElementById('question-text').textContent = "Loading questions...";
             return;
         }
         
         if (this.state.currentIndex >= this.state.questions.length) {
-            questionText.textContent = "Quiz completed!";
-            optionsContainer.innerHTML = '';
+            document.getElementById('question-text').textContent = "Quiz completed!";
             return;
         }
         
         const question = this.state.questions[this.state.currentIndex];
         
         // Update UI elements
-        Utils.$('#topic-badge').textContent = question.topic;
-        Utils.$('#current-q').textContent = this.state.currentIndex + 1;
-        Utils.$('#total-q').textContent = this.state.questions.length;
-        questionText.textContent = question.question;  // Use the variable
-        Utils.$('#quiz-score').textContent = this.state.score;
+        document.getElementById('topic-badge').textContent = question.topic;
+        document.getElementById('current-q').textContent = this.state.currentIndex + 1;
+        document.getElementById('total-q').textContent = this.state.questions.length;
+        document.getElementById('question-text').textContent = question.question;
+        document.getElementById('quiz-score').textContent = this.state.score;
         
         // Display options
+        const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
         
         question.options.forEach((option, index) => {
@@ -150,7 +137,6 @@ const Quiz = {
             optionBtn.className = 'quiz-option';
             optionBtn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + index)}.</span> ${option}`;
             optionBtn.dataset.index = index;
-            optionBtn.setAttribute('aria-label', `Option ${String.fromCharCode(65 + index)}: ${option}`);
             
             // Mark if previously answered
             if (this.state.answers[this.state.currentIndex] === index) {
@@ -167,15 +153,12 @@ const Quiz = {
         });
         
         // Update explanation
-        Utils.$('#explanation-text').textContent = 
+        document.getElementById('explanation-text').textContent = 
             this.state.answers[this.state.currentIndex] !== null ? 
             question.explanation : "Select an answer to see explanation";
         
         // Update button states
         this.updateQuizButtons();
-        
-        // Announce question to screen readers
-        Utils.announceToScreenReader(`Question ${this.state.currentIndex + 1}: ${question.question}`);
     },
     
     // Select an answer
@@ -191,7 +174,7 @@ const Quiz = {
         }
         
         // Update UI
-        const options = Utils.$$('#options-container .quiz-option');
+        const options = document.querySelectorAll('.quiz-option');
         options.forEach((opt, index) => {
             if (index === selectedIndex) {
                 opt.classList.add('selected');
@@ -204,15 +187,11 @@ const Quiz = {
         });
         
         // Show explanation
-        Utils.$('#explanation-text').textContent = question.explanation;
-        Utils.$('#quiz-score').textContent = this.state.score;
-        
-        // Announce result
-        const isCorrect = selectedIndex === question.correct;
-        Utils.announceToScreenReader(`${isCorrect ? 'Correct' : 'Incorrect'}! ${question.explanation}`);
+        document.getElementById('explanation-text').textContent = question.explanation;
+        document.getElementById('quiz-score').textContent = this.state.score;
         
         // Auto-advance after delay
-        Utils.safeSetTimeout(() => this.showNextQuestion(), 1500);
+        setTimeout(() => this.showNextQuestion(), 1500);
     },
     
     // Show previous question
@@ -230,18 +209,16 @@ const Quiz = {
             this.displayQuestion();
         } else {
             alert('Last question! Click "Submit Quiz" to finish.');
-            Utils.announceToScreenReader('Last question. Click submit quiz to finish.');
         }
     },
     
-    // Update quiz navigation buttons
+    // Update quiz buttons
     updateQuizButtons() {
-        const prevBtn = Utils.$('#prev-question');
-        const nextBtn = Utils.$('#next-question');
+        const prevBtn = document.getElementById('prev-question');
+        const nextBtn = document.getElementById('next-question');
         
         if (prevBtn) {
             prevBtn.disabled = this.state.currentIndex === 0;
-            prevBtn.setAttribute('aria-disabled', this.state.currentIndex === 0);
         }
         
         if (nextBtn) {
@@ -249,23 +226,15 @@ const Quiz = {
         }
     },
     
-    // Submit quiz and show results
+    // Submit quiz
     submitQuiz() {
         // Calculate results
         let correct = 0;
-        let wrong = 0;
-        let skipped = 0;
         
         this.state.answers.forEach((answer, index) => {
             const question = this.state.questions[index];
-            if (!question) return;
-            
-            if (answer === null) {
-                skipped++;
-            } else if (answer === question.correct) {
+            if (answer === question.correct) {
                 correct++;
-            } else {
-                wrong++;
             }
         });
         
@@ -273,187 +242,47 @@ const Quiz = {
         const percentage = (correct / this.state.questions.length) * 100;
         
         // Display results
-        Utils.$('#final-score').textContent = correct;
-        Utils.$('#max-score').textContent = this.state.questions.length;
+        document.getElementById('final-score').textContent = correct;
+        document.getElementById('max-score').textContent = this.state.questions.length;
         
         // Generate result message
         let message = "";
-        const messages = [
-            ["🏆 OUTSTANDING! You're a programming genius!", 90],
-            ["🎯 EXCELLENT! Strong CS fundamentals!", 80],
-            ["👍 GREAT JOB! Solid understanding!", 70],
-            ["💡 GOOD EFFORT! Keep practicing!", 60],
-            ["🌟 NOT BAD! The journey begins with a single variable!", 50],
-            ["📚 KEEP LEARNING! Every expert was once a beginner!", 0]
-        ];
+        if (percentage >= 90) {
+            message = "🏆 OUTSTANDING! You're a programming genius!";
+        } else if (percentage >= 80) {
+            message = "🎯 EXCELLENT! Strong CS fundamentals!";
+        } else if (percentage >= 70) {
+            message = "👍 GREAT JOB! Solid understanding!";
+        } else if (percentage >= 60) {
+            message = "💡 GOOD EFFORT! Keep practicing!";
+        } else if (percentage >= 50) {
+            message = "🌟 NOT BAD! The journey begins with a single variable!";
+        } else {
+            message = "📚 KEEP LEARNING! Every expert was once a beginner!";
+        }
         
-        message = messages.find(([_, min]) => percentage >= min)[0];
-        Utils.$('#result-message').textContent = message;
+        document.getElementById('result-message').textContent = message;
         
         // Show results container
-        Utils.$('#quiz-results').hidden = false;
-        Utils.$('.quiz-body').style.display = 'none';
-        Utils.$('.quiz-footer').style.display = 'none';
-        
-        // Add share score section
-        this.addShareScoreSection(correct, this.state.questions.length, percentage);
+        document.getElementById('quiz-results').style.display = 'block';
+        document.querySelector('.quiz-body').style.display = 'none';
+        document.querySelector('.quiz-footer').style.display = 'none';
         
         // Celebration for good scores
         if (percentage >= 70) {
-            Utils.safeSetTimeout(() => Utils.launchConfetti(), 500);
-        }
-        
-        // Announce results
-        Utils.announceToScreenReader(`Quiz complete! Score: ${correct} out of ${this.state.questions.length}. ${message}`);
-    },
-    
-    // Add share score section to results
-    addShareScoreSection(correct, total, percentage) {
-        const shareHTML = `
-            <div class="share-score-section">
-                <div class="share-header">
-                    <i class="fas fa-share-alt"></i>
-                    <h3>Share Your Score with Ali!</h3>
-                </div>
-                <p class="share-description">Let Ali know how you did on his CS quiz!</p>
-                <div class="share-actions">
-                    <button id="share-score-btn" class="btn-primary share-btn">
-                        <i class="fas fa-paper-plane"></i> Add Score to Message
-                    </button>
-                    <button id="copy-score-btn" class="game-btn secondary share-btn">
-                        <i class="far fa-copy"></i> Copy Score
-                    </button>
-                </div>
-                <div id="share-feedback" class="share-feedback"></div>
-            </div>
-        `;
-        
-        // Insert the share section
-        Utils.$('.results-footer').insertAdjacentHTML('beforebegin', shareHTML);
-        
-        // Add event listeners
-        Utils.$('#share-score-btn').addEventListener('click', () => this.shareScoreWithAli(correct, total, percentage));
-        Utils.$('#copy-score-btn').addEventListener('click', () => this.copyScoreToClipboard(correct, total, percentage));
-    },
-    
-    // Share score with Ali (add to message form)
-    shareScoreWithAli(correct, total, percentage) {
-        // Create performance message based on score
-        let performanceMessage = "";
-        let performanceEmoji = "";
-        
-        if (percentage >= 90) {
-            performanceMessage = "I aced your CS quiz! 🏆";
-            performanceEmoji = "🏆";
-        } else if (percentage >= 80) {
-            performanceMessage = "I did really well on your CS quiz! 💻";
-            performanceEmoji = "💻";
-        } else if (percentage >= 70) {
-            performanceMessage = "I passed your CS quiz! 👍";
-            performanceEmoji = "👍";
-        } else if (percentage >= 60) {
-            performanceMessage = "I tried your CS quiz! 📚";
-            performanceEmoji = "📚";
-        } else {
-            performanceMessage = "I attempted your CS quiz! 😅";
-            performanceEmoji = "😅";
-        }
-        
-        // Build the message
-        const scoreMessage = `${performanceMessage}
-
-🎯 **Score:** ${correct}/${total} (${percentage}%)
-⏰ **Completed:** ${new Date().toLocaleString()}
-${performanceEmoji} **Difficulty:** ${percentage >= 80 ? "Challenging but fun!" : "Tricky but interesting!"}
-
-I especially liked the questions about: [What topic did you like?]`;
-        
-        // Fill the message form
-        const messageInput = Utils.$('#sender-message');
-        const nameInput = Utils.$('#sender-name');
-        
-        if (messageInput && nameInput) {
-            // Auto-fill name
-            if (!nameInput.value.trim()) {
-                nameInput.value = "Fatima";
-            }
-            
-            // Auto-fill message with score
-            messageInput.value = scoreMessage;
-            
-            // Add visual highlight
-            messageInput.classList.add('auto-filled');
             setTimeout(() => {
-                messageInput.classList.remove('auto-filled');
-            }, 3000);
-            
-            // Focus on message area
-            messageInput.focus();
-            messageInput.setSelectionRange(0, 0);
-            
-            // Navigate to the Write Back section
-            Navigation.showSection('write-back');
-            
-            // Smooth scroll to the form
-            Utils.safeSetTimeout(() => {
-                Utils.$('#message-form').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-            }, 300);
-            
-            // Show success feedback
-            const feedback = Utils.$('#share-feedback');
-            if (feedback) {
-                feedback.innerHTML = `
-                    <div class="share-success">
-                        <i class="fas fa-check-circle"></i>
-                        <strong>Ready to send!</strong> Your score has been added to the message form.
-                    </div>
-                `;
-                feedback.style.display = 'block';
-            }
-            
-            // Add confetti celebration
-            Utils.safeSetTimeout(() => {
-                Utils.launchConfetti();
-            }, 500);
-            
-            Utils.announceToScreenReader('Score added to message form. You can now write a message to Ali.');
-            
-        } else {
-            // Fallback if form elements not found
-            this.copyScoreToClipboard(correct, total, percentage);
-        }
-    },
-    
-    // Copy score to clipboard
-    copyScoreToClipboard(correct, total, percentage) {
-        const scoreText = `🎯 CS Quiz Score: ${correct}/${total} (${percentage}%)
-Taken on: ${new Date().toLocaleDateString()}
-From: Fatima's 18th Birthday Website 🎂`;
-        
-        navigator.clipboard.writeText(scoreText)
-            .then(() => {
-                // Show feedback
-                const feedback = Utils.$('#share-feedback');
-                if (feedback) {
-                    feedback.innerHTML = `
-                        <div class="share-success">
-                            <i class="fas fa-check-circle"></i>
-                            <strong>Copied!</strong> Score is ready to paste anywhere.
-                        </div>
-                    `;
-                    feedback.style.display = 'block';
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
                 }
-                Utils.announceToScreenReader('Score copied to clipboard');
-            })
-            .catch(() => {
-                // Fallback for older browsers
-                prompt("Copy this score:", scoreText);
-            });
+            }, 500);
+        }
     }
 };
 
 // Make Quiz available globally
 window.Quiz = Quiz;
+console.log("📚 Quiz module loaded");
