@@ -221,3 +221,69 @@
         padding: 20px 15px;
     }
 }
+/* ===== LAPTOP SPECIFIC FIXES (769px - 1200px) ===== */
+@media (min-width: 769px) and (max-width: 1200px) {
+    /* Games section fixes for laptop */
+    .games-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 25px;
+    }
+    
+    .game-card {
+        padding: 20px;
+        min-height: 480px;
+    }
+    
+    .click-area {
+        min-height: 180px;
+        max-height: 220px;
+    }
+    
+    .click-counter h2 {
+        font-size: 3rem;
+    }
+    
+    .reaction-area {
+        min-height: 160px;
+        max-height: 200px;
+    }
+    
+    .reaction-timer {
+        font-size: 1.8rem;
+    }
+    
+    .timer-circle {
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+    }
+    
+    /* Make sure text doesn't overflow */
+    .game-description p,
+    .reaction-instruction p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+}
+
+/* ===== DESKTOP LARGE (1200px and above) ===== */
+@media (min-width: 1200px) {
+    .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    
+    .game-card {
+        min-height: 520px;
+    }
+    
+    .click-area {
+        min-height: 220px;
+        max-height: 280px;
+    }
+    
+    .reaction-area {
+        min-height: 200px;
+        max-height: 250px;
+    }
+}
