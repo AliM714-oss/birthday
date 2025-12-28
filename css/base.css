@@ -32,12 +32,100 @@
 }
 
 /* ===== DARK THEME OVERRIDES ===== */
+/* ===== DARK THEME OVERRIDES ===== */
 body.dark-theme {
     background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
     color: #f0f0f0;
     --card-bg: #2d2d44;
     --light-bg: #1a1a2e;
     --text-color: #f0f0f0;
+}
+
+/* Dark theme navbar */
+body.dark-theme .navbar {
+    background: rgba(26, 26, 46, 0.95);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark theme nav buttons */
+body.dark-theme .nav-btn {
+    color: #f0f0f0;
+}
+
+body.dark-theme .nav-btn:hover {
+    background: rgba(108, 99, 255, 0.2);
+    border-color: var(--primary-color);
+}
+
+body.dark-theme .nav-btn.active {
+    background: var(--primary-color);
+    color: white !important;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+}
+
+/* Dark theme focus outlines */
+body.dark-theme .nav-btn:focus,
+body.dark-theme .game-btn:focus,
+body.dark-theme .quiz-option:focus,
+body.dark-theme .btn-primary:focus,
+body.dark-theme .control-btn:focus {
+    outline-color: var(--accent-color);
+}
+
+/* Dark theme specific components */
+body.dark-theme .section-subtitle,
+body.dark-theme .hero-subtitle,
+body.dark-theme .game-description,
+body.dark-theme .quiz-progress,
+body.dark-theme .signature-note,
+body.dark-theme .footer-info p,
+body.dark-theme .footer-bottom,
+body.dark-theme .share-description {
+    color: #aaa;
+}
+
+body.dark-theme .feature,
+body.dark-theme .quiz-option {
+    background: rgba(108, 99, 255, 0.2);
+}
+
+body.dark-theme .result-item,
+body.dark-theme .explanation-box,
+body.dark-theme .results-container,
+body.dark-theme .message-quote,
+body.dark-theme #message-form,
+body.dark-theme .popup-content {
+    background: #2d2d44;
+}
+
+body.dark-theme .game-header,
+body.dark-theme .quiz-header,
+body.dark-theme .quiz-footer,
+body.dark-theme .message-footer,
+body.dark-theme .footer-bottom {
+    border-color: #444;
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #555;
+    color: #f0f0f0;
+}
+
+body.dark-theme .form-group input::placeholder,
+body.dark-theme .form-group textarea::placeholder {
+    color: #888;
+}
+
+body.dark-theme .share-score-section {
+    background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(255, 101, 132, 0.1));
+    border-color: rgba(108, 99, 255, 0.5);
+}
+
+body.dark-theme .popup-content {
+    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
 }
 
 /* ===== RESET & BASE STYLES ===== */
