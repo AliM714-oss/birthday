@@ -253,42 +253,50 @@ a:focus {
 
 
 /* EMERGENCY FIX FOR MOBILE NAVBAR SPACING */
+/* EMERGENCY FIX: Section header spacing on mobile */
 @media (max-width: 768px) {
-    .nav-container {
+    /* Fix all section titles */
+    .section-title {
+        display: flex !important;
+        align-items: center !important;
         justify-content: flex-start !important;
-        gap: 3px !important;
-        padding: 0 8px !important;
-        overflow-x: auto !important;
+        text-align: left !important;
+        gap: 8px !important;
+        flex-wrap: nowrap !important;
+        padding: 0 10px !important;
+        overflow: hidden !important;
     }
     
-    .nav-btn {
-        flex: 0 0 auto !important;
-        min-width: 60px !important;
-        max-width: 70px !important;
-        padding: 8px 5px !important;
-        font-size: 0.7rem !important;
-        height: 40px !important;
+    /* Fix icons */
+    .section-title i {
+        flex-shrink: 0 !important;
+        font-size: 1.2rem !important;
+        min-width: 24px !important;
     }
     
-    .nav-btn i {
+    /* Specific fix for problematic sections */
+    #quiz .section-title,
+    #message .section-title,
+    #write-back .section-title {
+        font-size: 1.4rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* Fix subtitles too */
+    .section-subtitle {
+        text-align: left !important;
+        padding: 0 10px !important;
+    }
+}
+
+/* Extra fix for very small phones */
+@media (max-width: 400px) {
+    .section-title {
+        font-size: 1.3rem !important;
+        gap: 6px !important;
+    }
+    
+    .section-title i {
         font-size: 1rem !important;
     }
-    
-    body {
-        padding-top: 56px !important;
-    }
-    
-    .navbar {
-        padding: 8px 0 !important;
-    }
 }
-.control-btn:hover {
-    background: var(--primary-color);
-    transform: scale(1.1);
-}
-
-.control-btn:focus {
-    outline: 3px solid var(--accent-color);
-    outline-offset: 3px;
-}
-
