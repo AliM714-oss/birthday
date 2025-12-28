@@ -6,18 +6,27 @@ const Quiz = {
         currentIndex: 0,
         score: 0,
         answers: [],
-        started: false
+        started: false,
+        isLoading: false  // Add this flag
     },
     
     // Initialize quiz
     async init() {
         await this.loadQuizData();
         this.setupEventListeners();
+        
+        // Remove initial loading message - show first question immediately if data is loaded
+        const questionText = Utils.$('#question-text');
+        if (questionText && this.state.questions.length > 0) {
+            this.state.currentIndex = 0;
+            this.displayQuestion();
+        }
     },
     
     // Load quiz questions from JSON
     async loadQuizData() {
         try {
+            this.state.isLoading = true;
             const response = await fetch('data/quiz-questions.json');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
@@ -25,7 +34,13 @@ const Quiz = {
             this.randomizeQuestions();
             
             console.log(`✅ Loaded ${this.state.questions.length} questions`);
-            Utils.announceToScreenReader(`Quiz loaded with ${this.state.questions.length} questions`);
+            
+            // Immediately display first question if on quiz section
+            if (Utils.state.currentSection === 'quiz') {
+                this.state.currentIndex = 0;
+                this.displayQuestion();
+            }
+            
         } catch (error) {
             console.error('❌ Failed to load quiz questions:', error);
             
@@ -37,6 +52,11 @@ const Quiz = {
                 correct: 0,
                 explanation: "Check the console for errors."
             }];
+            
+            // Show error immediately
+            this.displayQuestion();
+        } finally {
+            this.state.isLoading = false;
         }
     },
     
@@ -85,14 +105,31 @@ const Quiz = {
         Utils.$('.quiz-body').style.display = 'block';
         Utils.$('.quiz-footer').style.display = 'flex';
         
-        // Display first question
+        // Display first question immediately
         this.displayQuestion();
         Utils.announceToScreenReader('New quiz started!');
-    },
+    }
     
     // Display current question
     displayQuestion() {
-        if (this.state.questions.length === 0 || this.state.currentIndex >= this.state.questions.length) {
+        // Clear any loading message immediately
+        const questionText = Utils.$('#question-text');
+        const optionsContainer = Utils.$('#options-container');
+        
+        // If no questions loaded yet, show loading or fallback
+        if (this.state.questions.length === 0) {
+            if (this.state.isLoading) {
+                questionText.textContent = "Loading questions...";
+            } else {
+                questionText.textContent = "No questions available. Please refresh.";
+            }
+            optionsContainer.innerHTML = '';
+            return;
+        }
+        
+        if (this.state.currentIndex >= this.state.questions.length) {
+            questionText.textContent = "Quiz completed!";
+            optionsContainer.innerHTML = '';
             return;
         }
         
@@ -102,11 +139,10 @@ const Quiz = {
         Utils.$('#topic-badge').textContent = question.topic;
         Utils.$('#current-q').textContent = this.state.currentIndex + 1;
         Utils.$('#total-q').textContent = this.state.questions.length;
-        Utils.$('#question-text').textContent = question.question;
+        questionText.textContent = question.question;  // Use the variable
         Utils.$('#quiz-score').textContent = this.state.score;
         
         // Display options
-        const optionsContainer = Utils.$('#options-container');
         optionsContainer.innerHTML = '';
         
         question.options.forEach((option, index) => {
