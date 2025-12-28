@@ -1,0 +1,102 @@
+/* ===== CSS VARIABLES ===== */
+:root {
+    /* Colors */
+    --primary-color: #6c63ff;
+    --secondary-color: #ff6584;
+    --accent-color: #36d1dc;
+    --text-color: #333;
+    --light-bg: #f8f9fa;
+    --dark-bg: #1a1a2e;
+    --card-bg: #ffffff;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    
+    /* Fluid Size Scale */
+    --size-xs: clamp(0.75rem, 1.5vw, 1rem);
+    --size-sm: clamp(1rem, 2vw, 1.25rem);
+    --size-md: clamp(1.25rem, 2.5vw, 1.5rem);
+    --size-lg: clamp(1.5rem, 3vw, 2rem);
+    
+    /* Fluid Spacing */
+    --space-xs: clamp(0.5rem, 1vw, 0.75rem);
+    --space-sm: clamp(0.75rem, 1.5vw, 1rem);
+    --space-md: clamp(1rem, 2vw, 1.5rem);
+    --space-lg: clamp(1.5rem, 3vw, 2rem);
+    
+    /* Border Radius */
+    --radius-sm: clamp(4px, 0.5vw, 8px);
+    --radius-md: clamp(8px, 1vw, 15px);
+    --radius-lg: clamp(12px, 1.5vw, 25px);
+    
+    /* Transitions */
+    --transition: all 0.3s ease;
+}
+
+/* ===== DARK THEME OVERRIDES ===== */
+body.dark-theme {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    color: #f0f0f0;
+    --card-bg: #2d2d44;
+    --light-bg: #1a1a2e;
+    --text-color: #f0f0f0;
+}
+
+/* ===== RESET & BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: var(--text-color);
+    min-height: 100vh;
+    transition: var(--transition);
+    line-height: 1.6;
+}
+
+/* ===== ACCESSIBILITY ===== */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary-color);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 1001;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===== TOUCH FIXES ===== */
+.nav-btn, .game-btn, .quiz-option, .btn-primary {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+
+input, textarea {
+    -webkit-appearance: none;
+    border-radius: 0;
+}
